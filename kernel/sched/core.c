@@ -3394,7 +3394,13 @@ static void __sched notrace __schedule(bool preempt)
 	BUG_ON(task_cpu(next) != cpu_of(rq));
 
 	if (likely(prev != next)) {
+#ifdef CONFIG_SCHED_WALT
+		if (!prev->on_rq)
+			prev->last_sleep_ts = wallclock;
+#endif
+
 		cpufreq_update_util(rq, 0);
+
 		rq->nr_switches++;
 		rq->curr = next;
 		++*switch_count;
