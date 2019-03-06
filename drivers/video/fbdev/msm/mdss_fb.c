@@ -59,8 +59,14 @@
 #include "mdss_smmu.h"
 #include "mdss_mdp.h"
 
-#include "mdss_livedisplay.h"
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_KLAPSE
+#include "klapse.h"
+#endif
 
+#include <linux/wakelock.h>
+>>>>>>> 25f9894955d3... KLAPSE: Adapt for X01BD
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #define MDSS_FB_NUM 3
 #else
@@ -338,6 +344,10 @@ static void mdss_fb_set_bl_brightness(struct led_classdev *led_cdev,
 		mutex_unlock(&mfd->bl_lock);
 	}
 	mfd->bl_level_usr = bl_lvl;
+
+#ifdef CONFIG_KLAPSE
+	set_rgb_slider(bl_lvl);
+#endif
 }
 
 static enum led_brightness mdss_fb_get_bl_brightness(
