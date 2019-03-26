@@ -659,7 +659,7 @@
 		qcom,us-euro-gpios = <&us_euro_gpio>;
 		qcom,hph-en0-gpio = <&tasha_hph_en0>;
 		qcom,hph-en1-gpio = <&tasha_hph_en1>;
-		qcom,msm-mclk-freq = <9600000>;
+		qcom,msm-mclk-freq = <24576000>;
 		asoc-platform = <&pcm0>, <&pcm1>, <&pcm2>, <&voip>, <&voice>,
 				<&loopback>, <&compress>, <&hostless>,
 				<&afe>, <&lsm>, <&routing>, <&cpe>, <&compr>,
@@ -843,7 +843,7 @@
 		qcom,auxpcm-audio-intf;
 		qcom,ext-disp-audio-rx;
 		qcom,msm-mi2s-master = <1>, <1>, <1>, <1>;
-		qcom,msm-mclk-freq = <9600000>;
+		qcom,msm-mclk-freq = <24576000>;
 		qcom,msm-mbhc-hphl-swh = <1>;
 		qcom,msm-mbhc-gnd-swh = <1>;
 		qcom,msm-micbias2-ext-cap;
@@ -967,7 +967,7 @@
 		clocks = <&clock_rpmcc RPM_DIV_CLK1>;
 		qcom,node_has_rpm_clock;
 		#clock-cells = <1>;
-		qcom,codec-mclk-clk-freq = <11289600>;
+		qcom,codec-mclk-clk-freq = <24576000>;
 		qcom,mclk-clk-reg = <0x15020018 0x0>;
 		pinctrl-names = "sleep", "active";
 		pinctrl-0 = <&lpi_mclk0_sleep>;
