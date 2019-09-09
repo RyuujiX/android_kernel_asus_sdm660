@@ -100,4 +100,10 @@ config QPNP_QNOVO
 	  module. It also allows userspace code to read diagnostics of voltage
 	  and current measured during certain phases of the pulses.
 
+config AUTOCUT_CHARGER
+      bool "AutoCut Charger"
+      default n
+      help
+        Disable battery charging if battery capacity at 100.
+
 endmenu
