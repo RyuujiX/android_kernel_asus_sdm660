@@ -47,7 +47,7 @@ static bool check_error_encounter(void)
 	error_counter++;
 
 	if (error_counter >= 5) {
-		cancel_delayed_work(&autocut_charger_work);
+		cancel_delayed_work_sync(&autocut_charger_work);
 		return true;
 	}
 
@@ -136,3 +136,9 @@ static int __init autocut_charger_init(void)
 	return 0;
 }
 late_initcall(autocut_charger_init);
+
+static void __exit autocut_charger_exit(void)
+{
+	cancel_delayed_work_sync(&autocut_charger_work);
+}
+module_exit(autocut_charger_exit);
