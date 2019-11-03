@@ -13,16 +13,13 @@
  * at www.gnu.org/licenses
  */
 
-#include <linux/cpufreq.h>
-#include <linux/cpu.h>
 #include <linux/module.h>
 #include <linux/workqueue.h>
 #include <linux/power_supply.h>
-#include "power_supply.h"
 
 static struct delayed_work autocut_charger_work;
 
-static int error_counter = 0;
+static int not_ready = 0;
 
 static int battery_charging_enabled(struct power_supply *batt_psy, bool enable)
 {
@@ -36,42 +33,28 @@ static int battery_charging_enabled(struct power_supply *batt_psy, bool enable)
 	return 1;
 }
 
-static void reset_counter(void)
-{
-	if (error_counter > 0)
-		error_counter--;
-}
-
-static bool check_error_encounter(void)
-{
-	error_counter++;
-
-	if (error_counter >= 5) {
-		cancel_delayed_work_sync(&autocut_charger_work);
-		return true;
-	}
-
-	return false;
-}
-
 static void autocut_charger_worker(struct work_struct *work)
 {
 	struct power_supply *batt_psy = power_supply_get_by_name("battery");
 	struct power_supply *usb_psy = power_supply_get_by_name("usb");
-	union power_supply_propval status, bat_percent;
 	union power_supply_propval present = {0,}, charging_enabled = {0,};
+	union power_supply_propval status, bat_percent;
 	int ms_timer = 1000, rc = 0;
 
-	/* re-schdule and increase the timer if not ready */
-	if (!batt_psy->get_property || !usb_psy->get_property)
-	{
-		ms_timer = 10000;
+	/* re-schedule and increase the timer if not ready */
+	if (!batt_psy->get_property || !usb_psy->get_property) {
+		not_ready++;
 
-		if (check_error_encounter())
+		if (not_ready >= 10) {
+			cancel_delayed_work_sync(&autocut_charger_work);
 			return;
+		}
 
+		ms_timer = 10000;
 		goto reschedule;
 	}
+
+	not_ready = 0;
 
 	/* get values from /sys/class/power_supply/battery */
 	batt_psy->get_property(batt_psy,
@@ -85,40 +68,21 @@ static void autocut_charger_worker(struct work_struct *work)
 	usb_psy->get_property(usb_psy,
 			POWER_SUPPLY_PROP_PRESENT, &present);
 
-	if (status.intval == POWER_SUPPLY_STATUS_CHARGING || present.intval)
-	{
-		if (charging_enabled.intval && bat_percent.intval >= 100)
-		{
+	if (status.intval == POWER_SUPPLY_STATUS_CHARGING || present.intval) {
+		if (charging_enabled.intval && bat_percent.intval >= 100) {
 			rc = battery_charging_enabled(batt_psy, 0);
-			if (rc) {
-				pr_err("Failed to disable battery charging!\n");
-				if (check_error_encounter())
-					return;
-			} else
-				reset_counter();
-		}
-		else if (!charging_enabled.intval && bat_percent.intval < 100)
-		{
+			if (rc)
+				pr_err("%s: Failed to disable battery charging!\n", __func__);
+		} else if (!charging_enabled.intval && bat_percent.intval < 100) {
 			rc = battery_charging_enabled(batt_psy, 1);
-			if (rc) {
-				pr_err("Failed to enable battery charging!\n");
-				if (check_error_encounter())
-					return;
-			} else
-				reset_counter();
+			if (rc)
+				pr_err("%s: Failed to enable battery charging!\n", __func__);
 		}
-	}
-	else if (bat_percent.intval < 100 || !present.intval)
-	{
-		if (!charging_enabled.intval)
-		{
+	} else if (bat_percent.intval < 100 || !present.intval) {
+		if (!charging_enabled.intval) {
 			rc = battery_charging_enabled(batt_psy, 1);
-			if (rc) {
-				pr_err("Failed to enable battery charging!\n");
-				if (check_error_encounter())
-					return;
-			} else
-				reset_counter();
+			if (rc)
+				pr_err("%s: Failed to enable battery charging!\n", __func__);
 		}
 	}
 
@@ -128,10 +92,12 @@ reschedule:
 
 static int __init autocut_charger_init(void)
 {
-	INIT_DELAYED_WORK(&autocut_charger_work, autocut_charger_worker);
-	schedule_delayed_work(&autocut_charger_work, msecs_to_jiffies(15000));
-
-	pr_info("%s: Initialized.\n", __func__);
+	if (!strstr(saved_command_line, "androidboot.mode=charger")) {
+		INIT_DELAYED_WORK(&autocut_charger_work, autocut_charger_worker);
+		/* start worker in at least 20 seconds after boot completed */
+		schedule_delayed_work(&autocut_charger_work, msecs_to_jiffies(20000));
+		pr_info("%s: Initialized.\n", __func__);
+	}
 
 	return 0;
 }
@@ -139,6 +105,7 @@ late_initcall(autocut_charger_init);
 
 static void __exit autocut_charger_exit(void)
 {
-	cancel_delayed_work_sync(&autocut_charger_work);
+	if (!strstr(saved_command_line, "androidboot.mode=charger"))
+		cancel_delayed_work_sync(&autocut_charger_work);
 }
 module_exit(autocut_charger_exit);
