@@ -1,5 +1,6 @@
 /*
  * drivers/power/autocut_charger.c
+ * drivers/power/supply/autocut_charger.c
  *
  * AutoCut Charger.
  *
@@ -18,76 +19,102 @@
 #include <linux/power_supply.h>
 
 static struct delayed_work autocut_charger_work;
-
-static int not_ready = 0;
-
-static int battery_charging_enabled(struct power_supply *batt_psy, bool enable)
-{
-	const union power_supply_propval ret = {enable,};
-
-	if (batt_psy->set_property)
-		return batt_psy->set_property(batt_psy,
-				POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED,
-				&ret);
-
-	return 1;
-}
+static bool checked = false;
+static bool full_disable_charging = false;
 
 static void autocut_charger_worker(struct work_struct *work)
 {
 	struct power_supply *batt_psy = power_supply_get_by_name("battery");
 	struct power_supply *usb_psy = power_supply_get_by_name("usb");
-	union power_supply_propval present = {0,}, charging_enabled = {0,};
-	union power_supply_propval status, bat_percent;
-	int ms_timer = 1000, rc = 0;
+	union power_supply_propval present = {0,}, charging_enabled = {0,}, val = {0, };
+	union power_supply_propval bat_percent, check;
+	int rc = 0;
 
-	/* re-schedule and increase the timer if not ready */
-	if (!batt_psy->get_property || !usb_psy->get_property) {
-		not_ready++;
+	if (!checked) {
+		/* mark as already checked */
+		checked = true;
 
-		if (not_ready >= 10) {
-			cancel_delayed_work_sync(&autocut_charger_work);
-			return;
+		/*
+		 * Check compatibility ps properties
+		 * if not support at all, then exit service.
+		 */
+		rc = power_supply_get_property(batt_psy,
+		     POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &check);
+		if (rc) {
+			rc = power_supply_get_property(batt_psy,
+			     POWER_SUPPLY_PROP_CHARGING_ENABLED, &check);
+			if (rc) {
+				pr_err("autocut_charger: Charging driver not supported!\n");
+				cancel_delayed_work_sync(&autocut_charger_work);
+				return;
+			}
+			full_disable_charging = true;
 		}
-
-		ms_timer = 10000;
-		goto reschedule;
 	}
 
-	not_ready = 0;
-
-	/* get values from /sys/class/power_supply/battery */
-	batt_psy->get_property(batt_psy,
-			POWER_SUPPLY_PROP_STATUS, &status);
-	batt_psy->get_property(batt_psy,
-			POWER_SUPPLY_PROP_CAPACITY, &bat_percent);
-	batt_psy->get_property(batt_psy,
+	if (full_disable_charging)
+		power_supply_get_property(batt_psy,
+			POWER_SUPPLY_PROP_CHARGING_ENABLED, &charging_enabled);
+	else
+		power_supply_get_property(batt_psy,
 			POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &charging_enabled);
 
-	/* get values from /sys/class/power_supply/usb */
-	usb_psy->get_property(usb_psy,
+	power_supply_get_property(batt_psy,
+			POWER_SUPPLY_PROP_CAPACITY, &bat_percent);
+	power_supply_get_property(usb_psy,
 			POWER_SUPPLY_PROP_PRESENT, &present);
 
-	if (status.intval == POWER_SUPPLY_STATUS_CHARGING || present.intval) {
-		if (charging_enabled.intval && bat_percent.intval >= 100) {
-			rc = battery_charging_enabled(batt_psy, 0);
-			if (rc)
-				pr_err("%s: Failed to disable battery charging!\n", __func__);
-		} else if (!charging_enabled.intval && bat_percent.intval < 100) {
-			rc = battery_charging_enabled(batt_psy, 1);
-			if (rc)
-				pr_err("%s: Failed to enable battery charging!\n", __func__);
+	if (full_disable_charging) {
+		if (present.intval) {
+			if (charging_enabled.intval && bat_percent.intval >= 100) {
+				val.intval = false;
+				rc = power_supply_set_property(batt_psy,
+					POWER_SUPPLY_PROP_CHARGING_ENABLED, &val);
+				if (rc)
+					pr_err("%s: Failed to disable battery charging!\n", __func__);
+			} else if (!charging_enabled.intval && bat_percent.intval <= 90) {
+				val.intval = true;
+				rc = power_supply_set_property(batt_psy,
+					POWER_SUPPLY_PROP_CHARGING_ENABLED, &val);
+				if (rc)
+					pr_err("%s: Failed to enable battery charging!\n", __func__);
+			}
+		} else {
+			if (!charging_enabled.intval) {
+				val.intval = true;
+				rc = power_supply_set_property(batt_psy,
+					POWER_SUPPLY_PROP_CHARGING_ENABLED, &val);
+				if (rc)
+					pr_err("%s: Failed to enable battery charging!\n", __func__);
+			}
 		}
-	} else if (bat_percent.intval < 100 || !present.intval) {
-		if (!charging_enabled.intval) {
-			rc = battery_charging_enabled(batt_psy, 1);
-			if (rc)
-				pr_err("%s: Failed to enable battery charging!\n", __func__);
+	} else {
+		if (present.intval) {
+			if (charging_enabled.intval && bat_percent.intval >= 100) {
+				val.intval = false;
+				rc = power_supply_set_property(batt_psy,
+					POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+				if (rc)
+					pr_err("%s: Failed to disable battery charging!\n", __func__);
+			} else if (!charging_enabled.intval && bat_percent.intval < 100) {
+				val.intval = true;
+				rc = power_supply_set_property(batt_psy,
+					POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+				if (rc)
+					pr_err("%s: Failed to enable battery charging!\n", __func__);
+			}
+		} else {
+			if (!charging_enabled.intval) {
+				val.intval = true;
+				rc = power_supply_set_property(batt_psy,
+					POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+				if (rc)
+					pr_err("%s: Failed to enable battery charging!\n", __func__);
+			}
 		}
 	}
 
-reschedule:
-	schedule_delayed_work(&autocut_charger_work, msecs_to_jiffies(ms_timer));
+	schedule_delayed_work(&autocut_charger_work, msecs_to_jiffies(1000));
 }
 
 static int __init autocut_charger_init(void)
