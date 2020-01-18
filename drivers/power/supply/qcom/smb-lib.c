@@ -3941,7 +3941,7 @@ void asus_chg_flow_work(struct work_struct *work)
 		break;
 
 	case CDP_CHARGER_BIT:
-		set_icl = ICL_1500mA;
+		set_icl = ICL_3000mA;
 
 		rc = smblib_masked_write(smbchg_dev, USBIN_CURRENT_LIMIT_CFG_REG,
 						USBIN_CURRENT_LIMIT_MASK,
