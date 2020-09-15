@@ -13675,8 +13675,6 @@ static struct regulator *tasha_codec_find_ondemand_regulator(
 	return NULL;
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_SOUND_CONTROL
 static struct snd_soc_codec *sound_control_codec_ptr;
 
@@ -13697,14 +13695,7 @@ static ssize_t headphone_gain_store(struct kobject *kobj,
 
 	sscanf(buf, "%d %d", &input_l, &input_r);
 
-	if (input_l < -84 || input_l > 20)
-<<<<<<< HEAD
-		input_l = 0;
-
-	if (input_r < -84 || input_r > 20)
 	if (input_l < -10 || input_l > 20)
-=======
->>>>>>> ASoC: wcd9335: add earpiece and mic gain, prevent headphone reset
 		input_l = 0;
 
 	if (input_r < -84 || input_r > 20)
@@ -13777,13 +13768,6 @@ static struct kobj_attribute earpiece_gain_attribute =
 		earpiece_gain_show,
 		earpiece_gain_store);
 
-<<<<<<< HEAD
-static struct attribute *sound_control_attrs[] = {
-		&headphone_gain_attribute.attr,
-		&mic_gain_attribute.attr,
-		&earpiece_gain_attribute.attr,
-=======
->>>>>>> ASoC: wcd9335: add earpiece and mic gain, prevent headphone reset
 static struct attribute *sound_control_attrs[] = {
 		&headphone_gain_attribute.attr,
 		&mic_gain_attribute.attr,
@@ -13798,7 +13782,6 @@ static struct attribute_group sound_control_attr_group = {
 static struct kobject *sound_control_kobj;
 #endif
 
->>>>>>> 2bd6eaf019ae... ASoC: wcd9335: add earpiece and mic gain, prevent headphone reset
 static int tasha_codec_probe(struct snd_soc_codec *codec)
 {
 	struct wcd9xxx *control;

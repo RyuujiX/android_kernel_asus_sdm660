@@ -59,14 +59,9 @@
 #include "mdss_smmu.h"
 #include "mdss_mdp.h"
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_KLAPSE
 #include <linux/klapse.h>
 #endif
-
-#include <linux/wakelock.h>
->>>>>>> 25f9894955d3... KLAPSE: Adapt for X01BD
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #define MDSS_FB_NUM 3
 #else
