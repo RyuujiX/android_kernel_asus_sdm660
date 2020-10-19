@@ -28,7 +28,7 @@ CFLAGS_aes-ce-cipher.o += -mcpu=cortex-a53+crypto -mtune=cortex-a53+crypto
 endif
 
 ifeq ($(cc-name),gcc)
-CFLAGS_aes-ce-cipher.o += -mcpu=cortex-a73+crypto.cortex-a53+crypto -mtune=cortex-a73+crypto.cortex-a53+crypto
+CFLAGS_aes-ce-cipher.o += -mcpu=cortex-a53+crypto -mtune=cortex-a53+crypto
 endif
 
 obj-$(CONFIG_CRYPTO_AES_ARM64_CE_CCM) += aes-ce-ccm.o
