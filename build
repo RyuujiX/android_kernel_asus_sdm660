@@ -1,0 +1,102 @@
+MakeZip(){
+    AnykernelPath=../../Anykernel3
+    if [ ! -d $AnykernelPath ];then
+        mkdir $AnykernelPath
+        cd $AnykernelPath
+        git clone https://github.com/ZyCromerZ/AnyKernel3 -b master .
+        git fetch origin master master-begonia original
+        git checkout origin/master-begonia && git checkout -b master-begonia
+        git checkout origin/original && git checkout -b original
+        git checkout master
+        AnykernelPath=$(pwd)
+    else
+        cd $AnykernelPath
+        git reset --hard
+        git fetch origin master
+        git checkout master
+        git reset --hard origin/master
+        AnykernelPath=$(pwd)
+    fi
+    SpectrumPath=../Spectrum
+    if [ ! -d $SpectrumPath ];then
+        mkdir $SpectrumPath
+        cd $SpectrumPath
+        git clone https://github.com/ZyCromerZ/Spectrum -b master .
+        SpectrumPath=$(pwd)
+        cd $AnykernelPath
+    else
+        cd $SpectrumPath
+        git fetch origin master
+        git reset --hard origin/master
+        SpectrumPath=$(pwd)
+        cd $AnykernelPath
+    fi
+    [ ! -z "$SpectrumFile" ] && [ -e "$SpectrumPath/$SpectrumFile" ] && cp -af $SpectrumPath/$SpectrumFile $AnykernelPath/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KERNEL_NAME/g" init.spectrum.rc
+    cp -af $MainPath/../../X01BD/out/arch/arm64/boot/Image.gz-dtb $AnykernelPath && rm -f $MainPath/../../X01BD/out/arch/arm64/boot/Image.gz-dtb 
+    cp -af anykernel-real.sh anykernel.sh
+    sed -i "s/kernel.string=.*/kernel.string=$KERNEL_NAME-$HeadCommit TEST by ZyCromerZ/g" anykernel.sh
+    zip -r ../kernel/zip/X01BD/"[$1][$TANGGAL]$KERNEL_NAME-$ZIP_KERNEL_VERSION.zip" ./ -x .git/**\* ./.git ./anykernel-real.sh ./.gitignore ./LICENSE ./README.md ./*.zip 
+    cd $MainPath
+}
+HeadCommit="$(git log --pretty=format:'%h' -1)"
+export ARCH="arm64"
+export SUBARCH="arm64"
+export KBUILD_BUILD_USER="ZyCromerZ"
+export KBUILD_BUILD_HOST="Lnix-$(git log --pretty=format:'%h' -1)"
+export CCACHE_DIR="../../X01BD/ccache"
+MainPath=$(pwd)
+Defconfig="X01BD_defconfig"
+KERNEL_NAME=$(cat "$MainPath/arch/arm64/configs/$Defconfig" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
+ZIP_KERNEL_VERSION="4.4.$(cat "$MainPath/Makefile" | grep "SUBLEVEL =" | sed 's/SUBLEVEL = *//g')$(cat "$(pwd)/Makefile" | grep "EXTRAVERSION =" | sed 's/EXTRAVERSION = *//g')"
+GetCore=$(nproc --all)
+TANGGAL=$(date +"%m%d")
+echo "dih . . .";
+MAKE="./makeparallel"
+rm -rf ../../X01BD/out && \
+make -j$(($GetCore*2))  O=../../X01BD/out ARCH="arm64" SUBARCH="arm64" "$Defconfig" && \
+if [ ! -z "$1" ] && [ "$1" == "regen" ];then
+    cp -af ../../X01BD/out/.config arch/$ARCH/configs/$Defconfig
+else
+    make -j$(($GetCore*2))  O=../../X01BD/out \
+                                PATH="../../clang/proton-clang/bin:../../gcc/aarch64-linux-android-4.9/bin:../../gcc/arm-linux-androideabi-4.9/bin:${PATH}" \
+                                LD_LIBRARY_PATH="../../clang/proton-clang/lib:${LD_LIBRARY_PATH}" \
+                                CC="ccache clang" \
+                                CROSS_COMPILE=aarch64-linux-android- \
+                                CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+                                AR=llvm-ar \
+                                AS=llvm-as \
+                                NM=llvm-nm \
+                                OBJCOPY=llvm-objcopy \
+                                OBJDUMP=llvm-objdump \
+                                OBJSIZE=llvm-size \
+                                READELF=llvm-readelf \
+                                STRIP=llvm-strip \
+                                HOSTCC=clang \
+                                HOSTCXX=clang++ \
+                                HOSTAR=llvm-ar \
+                                CLANG_TRIPLE=aarch64-linux-gnu-
+    [ -e ../../X01BD/out/arch/arm64/boot/Image.gz-dtb ] && MakeZip 'Q' && \
+    git revert e33d9b9a45b44e73b55657e44ea4c7e4584ce848  --no-commit && git commit -s -m 'Revert "qcacld-3.0: discard wlan_boot sysfs code on !CONFIG_MODULES" (e33d9b9a45b44e73b55657e44ea4c7e4584ce848)' && \
+    rm -rf ../../X01BD/out && \
+    make -j$(($GetCore*2))  O=../../X01BD/out ARCH="arm64" SUBARCH="arm64" "$Defconfig" && \
+    make -j$(($GetCore*2))  O=../../X01BD/out \
+                                PATH="../../clang/proton-clang/bin:../../gcc/aarch64-linux-android-4.9/bin:../../gcc/arm-linux-androideabi-4.9/bin:${PATH}" \
+                                LD_LIBRARY_PATH="../../clang/proton-clang/lib:${LD_LIBRARY_PATH}" \
+                                CC="ccache clang" \
+                                CROSS_COMPILE=aarch64-linux-android- \
+                                CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+                                AR=llvm-ar \
+                                AS=llvm-as \
+                                NM=llvm-nm \
+                                OBJCOPY=llvm-objcopy \
+                                OBJDUMP=llvm-objdump \
+                                OBJSIZE=llvm-size \
+                                READELF=llvm-readelf \
+                                STRIP=llvm-strip \
+                                HOSTCC=clang \
+                                HOSTCXX=clang++ \
+                                HOSTAR=llvm-ar \
+                                CLANG_TRIPLE=aarch64-linux-gnu-
+    [ -e ../../X01BD/out/arch/arm64/boot/Image.gz-dtb ] && MakeZip 'P' && \
+    git reset --hard HEAD~1
+fi
