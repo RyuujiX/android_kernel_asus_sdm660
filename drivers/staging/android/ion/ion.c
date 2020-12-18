@@ -2019,6 +2019,11 @@ static int debug_shrink_set(void *data, u64 val)
 	if (!val) {
 		objs = heap->shrinker.count_objects(&heap->shrinker, &sc);
 		sc.nr_to_scan = objs;
+
+	if (heap->flags & ION_HEAP_FLAG_DEFER_FREE) {
+		heap->wq = alloc_workqueue("%s", WQ_UNBOUND | WQ_MEM_RECLAIM |
+					   WQ_CPU_INTENSIVE, 1, heap->name);
+		BUG_ON(!heap->wq);
 	}
 
 	heap->shrinker.scan_objects(&heap->shrinker, &sc);
