@@ -49,6 +49,7 @@
 #ifdef CONFIG_MACH_ASUS_SDM660
 #include <linux/wakelock.h>
 #endif
+#include <linux/pm_qos.h>
 #include <sync.h>
 #include <sw_sync.h>
 
@@ -4783,7 +4784,7 @@ err:
 	return ret;
 }
 
-static int mdss_fb_atomic_commit_ioctl(struct fb_info *info,
+static int __mdss_fb_atomic_commit_ioctl(struct fb_info *info,
 	unsigned long *argp, struct file *file)
 {
 	int ret, i = 0, j = 0, rc;
@@ -4965,6 +4966,28 @@ err:
 		kfree(ds_data);
 	}
 
+	return ret;
+}
+
+int mdss_fb_atomic_commit_ioctl(struct fb_info *info,
+	unsigned long *argp, struct file *file)
+{
+	/*
+	 * Optimistically assume the current task won't migrate to another CPU
+	 * and restrict the current CPU to shallow idle states so that it won't
+	 * take too long to finish running the ioctl whenever the ioctl runs a
+	 * command that sleeps, such as for an "atomic" commit.
+	 */
+	struct pm_qos_request req = {
+		.type = PM_QOS_REQ_AFFINE_CORES,
+		.cpus_affine = ATOMIC_INIT(BIT(raw_smp_processor_id()))
+	};
+	int ret;
+ 
+	pm_qos_add_request(&req, PM_QOS_CPU_DMA_LATENCY, 100);
+	ret = __mdss_fb_atomic_commit_ioctl(info, argp, file);
+	pm_qos_remove_request(&req);
+ 
 	return ret;
 }
 
