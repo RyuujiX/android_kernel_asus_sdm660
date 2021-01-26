@@ -751,3 +751,10 @@ config VM_MAX_READAHEAD
 	 This sets the VM_MAX_READAHEAD value to allow the readahead window
 	 to grow to a maximum size of configured. This will benefit sequential
 	 read throughput and thus early boot performance.
+
+config ANDROID_PR_KILL
+	bool "Enable PRLMK"
+	depends on PROCESS_RECLAIM && TASK_XACCT && !PSI && !MEMCG && !ANDROID_LOW_MEMORY_KILLER && !ANDROID_SIMPLE_LMK
+	default n
+	help
+	  PRLMK is a custom low-memory-killer for Android, based on the process reclaim driver.
