@@ -1222,6 +1222,7 @@
 		qcom,cpulist = <&CPU0 &CPU1 &CPU2 &CPU3>;
 		qcom,target-dev = <&memlat_cpu0>;
 		qcom,core-dev-table =
+			< 300000 572 >,
 			< 902400 762 >,
 			< 1401600 2086 >,
 			< 1881600 3879 >;
@@ -1232,6 +1233,7 @@
 		qcom,cpulist = <&CPU4 &CPU5 &CPU6 &CPU7>;
 		qcom,target-dev = <&memlat_cpu4>;
 		qcom,core-dev-table =
+			< 300000 572 >,
 			< 1113600 762 >,
 			< 1401600 3879 >,
 			< 2150400 5931 >,
@@ -1242,10 +1244,12 @@
 		mincpubw-cpufreq {
 			target-dev = <&mincpubw>;
 			cpu-to-dev-map-0 =
+				< 300000 572 >,
 				< 633600 762 >,
 				< 1401600 1571 >,
 				< 1881600 2929 >;
 			cpu-to-dev-map-4 =
+				< 300000 572 >,
 				< 1113600 762 >,
 				< 1401600 2086 >,
 				< 1747200 2929 >,
