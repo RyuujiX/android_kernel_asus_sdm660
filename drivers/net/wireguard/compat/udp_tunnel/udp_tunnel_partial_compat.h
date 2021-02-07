@@ -138,7 +138,7 @@ static inline void __compat_fake_destructor(struct sk_buff *skb)
 #define udp_tunnel_xmit_skb(a, b, c, d, e, f, g, h, i, j, k, l) do { struct net_device *dev__ = (c)->dev; int ret__ = udp_tunnel_xmit_skb(a, b, c, d, e, f, g, h, i, j, k, l); if (ret__) iptunnel_xmit_stats(ret__ - 8, &dev__->stats, dev__->tstats); } while (0)
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 5, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 3, 0)
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 5, 0) || LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 256)) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 3, 0)
 #include <linux/if.h>
 #include <net/udp_tunnel.h>
 #define udp_tunnel_xmit_skb(a, b, c, d, e, f, g, h, i, j, k, l) do { struct net_device *dev__ = (c)->dev; int ret__ = udp_tunnel_xmit_skb(a, b, c, d, e, f, g, h, i, j, k, l); iptunnel_xmit_stats(ret__, &dev__->stats, dev__->tstats); } while (0)
