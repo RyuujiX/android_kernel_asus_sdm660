@@ -3849,7 +3849,7 @@ int wlan_hdd_cfg80211_sched_scan_stop(struct wiphy *wiphy,
 #endif /* KERNEL_VERSION(4, 12, 0) */
 #endif /*FEATURE_WLAN_SCAN_PNO */
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)) || \
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0) && LINUX_VERSION_CODE < KERNEL_VERSION(4, 4, 256)) || \
 	defined(CFG80211_ABORT_SCAN)
 /**
  * __wlan_hdd_cfg80211_abort_scan() - cfg80211 abort scan api
