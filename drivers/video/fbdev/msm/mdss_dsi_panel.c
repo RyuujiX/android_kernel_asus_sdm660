@@ -3033,8 +3033,6 @@ static int mdss_panel_parse_dt(struct device_node *np,
 		pinfo->esc_clk_rate_hz = MDSS_DSI_MAX_ESC_CLK_RATE_HZ;
 	pr_debug("%s: esc clk %d\n", __func__, pinfo->esc_clk_rate_hz);
 
-	mdss_livedisplay_parse_dt(np, pinfo);
-
 	return 0;
 
 error:

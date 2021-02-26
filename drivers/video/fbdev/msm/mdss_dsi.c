@@ -3143,7 +3143,6 @@ static int mdss_dsi_event_handler(struct mdss_panel_data *pdata,
 	case MDSS_EVENT_AVR_MODE:
 		mdss_dsi_avr_config(ctrl_pdata, (int)(unsigned long) arg);
 		break;
-#ifndef CONFIG_MACH_ASUS_X00TD
 	case MDSS_EVENT_DSI_DYNAMIC_BITCLK:
 		if (ctrl_pdata->panel_data.panel_info.dynamic_bitclk) {
 			rc = mdss_dsi_dynamic_bitclk_config(pdata);
@@ -3152,10 +3151,6 @@ static int mdss_dsi_event_handler(struct mdss_panel_data *pdata,
 					rc);
 		}
 		break;
-	case MDSS_EVENT_UPDATE_LIVEDISPLAY:
-		rc = mdss_livedisplay_update(ctrl_pdata, (int)(unsigned long) arg);
-		break;
-#endif
 	default:
 		pr_debug("%s: unhandled event=%d\n", __func__, event);
 		break;
