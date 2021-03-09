@@ -1047,6 +1047,7 @@ static char *files_array[] = {
 	"nfsinjector",
 	"lkt",
 	"MAGNE",
+	"com.zeetaa",
 	"perfetto.rc",
 	"traced_perf.rc",
 	"traceur.rc",
