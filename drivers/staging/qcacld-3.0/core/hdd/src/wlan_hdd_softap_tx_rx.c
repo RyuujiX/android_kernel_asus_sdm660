@@ -1153,15 +1153,10 @@ QDF_STATUS hdd_softap_rx_packet_cbk(void *adapter_context, qdf_nbuf_t rx_buf)
 
 		qdf_status = hdd_rx_deliver_to_stack(adapter, skb);
 
-		if (QDF_IS_STATUS_SUCCESS(qdf_status)) {
+		if (QDF_IS_STATUS_SUCCESS(qdf_status))
 			++adapter->hdd_stats.tx_rx_stats.rx_delivered[cpu_index];
-		} else {
+		else
 			++adapter->hdd_stats.tx_rx_stats.rx_refused[cpu_index];
-			DPTRACE(qdf_dp_log_proto_pkt_info(NULL, NULL, 0, 0,
-						      QDF_RX,
-						      QDF_TRACE_DEFAULT_MSDU_ID,
-						      QDF_TX_RX_STATUS_DROP));
-		}
 	}
 
 	return QDF_STATUS_SUCCESS;
@@ -1398,7 +1393,7 @@ QDF_STATUS hdd_softap_stop_bss(struct hdd_adapter *adapter)
 
 	if (adapter->device_mode == QDF_SAP_MODE &&
 	    !hdd_ctx->config->disable_channel)
-		wlan_hdd_restore_channels(hdd_ctx, true);
+		wlan_hdd_restore_channels(hdd_ctx);
 
 	/*  Mark the indoor channel (passive) to enable  */
 	if (indoor_chnl_marking && adapter->device_mode == QDF_SAP_MODE) {
