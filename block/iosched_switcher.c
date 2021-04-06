@@ -18,14 +18,14 @@
 #include <linux/elevator.h>
 #include <linux/fb.h>
 
-#define NOOP_IOSCHED "noop"
+#define BFQ_IOSCHED "bfq"
 #define RESTORE_DELAY_MS (5000)
 
 struct req_queue_data {
 	struct list_head list;
 	struct request_queue *queue;
 	char prev_e[ELV_NAME_MAX];
-	bool using_noop;
+	bool using_bfq;
 };
 
 static struct delayed_work restore_prev;
@@ -35,29 +35,29 @@ static struct req_queue_data req_queues = {
 	.list = LIST_HEAD_INIT(req_queues.list),
 };
 
-static void change_elevator(struct req_queue_data *r, bool use_noop)
+static void change_elevator(struct req_queue_data *r, bool use_bfq)
 {
 	struct request_queue *q = r->queue;
 
-	if (r->using_noop == use_noop)
+	if (r->using_bfq == use_bfq)
 		return;
 
-	r->using_noop = use_noop;
+	r->using_bfq = use_bfq;
 
-	if (use_noop) {
+	if (use_bfq) {
 		strcpy(r->prev_e, q->elevator->type->elevator_name);
-		elevator_change(q, NOOP_IOSCHED);
+		elevator_change(q, BFQ_IOSCHED);
 	} else {
 		elevator_change(q, r->prev_e);
 	}
 }
 
-static void change_all_elevators(struct list_head *head, bool use_noop)
+static void change_all_elevators(struct list_head *head, bool use_bfq)
 {
 	struct req_queue_data *r;
 
 	list_for_each_entry(r, head, list)
-		change_elevator(r, use_noop);
+		change_elevator(r, use_bfq);
 }
 
 static int fb_notifier_callback(struct notifier_block *nb,
@@ -73,7 +73,7 @@ static int fb_notifier_callback(struct notifier_block *nb,
 	switch (*blank) {
 	case FB_BLANK_UNBLANK:
 		/*
-		 * Switch back from noop to the original iosched after a delay
+		 * Switch back from bfq to the original iosched after a delay
 		 * when the screen is turned on.
 		 */
 		if (delayed_work_pending(&sleep_sched))
@@ -83,7 +83,7 @@ static int fb_notifier_callback(struct notifier_block *nb,
 		break;
 	default:
 		/*
-		 * Switch to noop when the screen turns off. Purposely block
+		 * Switch to bfq when the screen turns off. Purposely block
 		 * the fb notifier chain call in case weird things can happen
 		 * when switching elevators while the screen is off.
 		 */
