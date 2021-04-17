@@ -118,7 +118,7 @@ static void asus_smblib_rerun_aicl(struct smb_charger *chg)
 
 	/* reg=1380, bit2=0, USBIN_AICL_EN=enable */
 	smblib_masked_write(chg, USBIN_AICL_OPTIONS_CFG_REG,
-				USBIN_AICL_EN_BIT, 1);
+				USBIN_AICL_EN_BIT, USBIN_AICL_EN_BIT);
 }
 
 extern struct wake_lock asus_chg_lock;
@@ -4163,7 +4163,7 @@ void asus_insertion_initial_settings(struct smb_charger *chg)
 		dev_err(chg->dev, "Couldn't set default PRE_CHARGE_CURRENT_CFG_REG rc=%d\n",
 			rc);
 
-	rc = smblib_write(chg, FAST_CHARGE_CURRENT_CFG_REG, 0x78);
+	rc = smblib_write(chg, FAST_CHARGE_CURRENT_CFG_REG, 0x28);
 	if (rc < 0)
 		dev_err(chg->dev, "Couldn't set default FAST_CHARGE_CURRENT_CFG_REG rc=%d\n",
 			rc);
@@ -4203,7 +4203,7 @@ void asus_insertion_initial_settings(struct smb_charger *chg)
 			rc);
 
 	rc = smblib_masked_write(chg, CHARGING_ENABLE_CMD_REG,
-			CHARGING_ENABLE_CMD_BIT, 1);
+			CHARGING_ENABLE_CMD_BIT, CHARGING_ENABLE_CMD_BIT);
 	if (rc < 0)
 		dev_err(chg->dev, "Couldn't set default CHARGING_ENABLE_CMD_REG rc=%d\n",
 			rc);
