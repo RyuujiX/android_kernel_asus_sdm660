@@ -1374,7 +1374,7 @@ static int mdss_dsi_off(struct mdss_panel_data *pdata, int power_state)
 			  MDSS_DSI_CORE_CLK, MDSS_DSI_CLK_OFF);
 
 panel_power_ctrl:
-#ifndef CONFIG_MACH_ASUS_SDM660
+#ifdef CONFIG_MACH_ASUS_SDM660
 	ret = mdss_dsi_panel_power_ctrl(pdata, power_state);
 	if (ret) {
 		pr_err("%s: Panel power off failed\n", __func__);
@@ -2397,7 +2397,7 @@ end_update:
 	return rc;
 }
 
-#ifndef CONFIG_MACH_ASUS_X00TD
+#ifdef CONFIG_MACH_ASUS_X00TD
 static int mdss_dsi_dynamic_bitclk_config(struct mdss_panel_data *pdata)
 {
 	int rc = 0;
@@ -3143,6 +3143,7 @@ static int mdss_dsi_event_handler(struct mdss_panel_data *pdata,
 	case MDSS_EVENT_AVR_MODE:
 		mdss_dsi_avr_config(ctrl_pdata, (int)(unsigned long) arg);
 		break;
+#ifdef CONFIG_MACH_ASUS_X00TD
 	case MDSS_EVENT_DSI_DYNAMIC_BITCLK:
 		if (ctrl_pdata->panel_data.panel_info.dynamic_bitclk) {
 			rc = mdss_dsi_dynamic_bitclk_config(pdata);
@@ -3151,6 +3152,7 @@ static int mdss_dsi_event_handler(struct mdss_panel_data *pdata,
 					rc);
 		}
 		break;
+#endif
 	default:
 		pr_debug("%s: unhandled event=%d\n", __func__, event);
 		break;
