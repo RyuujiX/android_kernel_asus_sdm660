@@ -339,8 +339,6 @@ include scripts/Kbuild.include
 # Make variables (CC, etc...)
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
-LDGOLD		= $(CROSS_COMPILE)ld.gold
-LDLLD		= ld.lld
 CC		= $(CROSS_COMPILE)gcc
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
@@ -626,41 +624,10 @@ CLANG_FLAGS	+= --gcc-toolchain=$(GCC_TOOLCHAIN)
 endif
 CLANG_FLAGS	+= -no-integrated-as
 CLANG_FLAGS	+= -Werror=unknown-warning-option
-ifeq ($(ld-name),lld)
-CLANG_FLAGS	+= -fuse-ld=$(shell which $(LD))
-endif
-KBUILD_CPPFLAGS	+= -Qunused-arguments
 CLANG_FLAGS    += $(call cc-option, -Wno-misleading-indentation)
 CLANG_FLAGS    += $(call cc-option, -Wno-bool-operation)
 KBUILD_CFLAGS	+= $(CLANG_FLAGS)
 KBUILD_AFLAGS	+= $(CLANG_FLAGS)
-ifeq ($(ld-name),lld)
-KBUILD_CFLAGS += -fuse-ld=lld
-endif
-KBUILD_CPPFLAGS += -Qunused-arguments
-endif
-
-# Make toolchain changes before including arch/$(SRCARCH)/Makefile to ensure
-# ar/cc/ld-* macros return correct values.
-ifdef CONFIG_LD_GOLD
-LDFINAL_vmlinux := $(LD)
-LD		:= $(LDGOLD)
-endif
-ifdef CONFIG_LD_LLD
-LD		:= $(LDLLD)
-endif
-ifdef CONFIG_LTO_CLANG
-# use GNU gold with LLVMgold or LLD for LTO linking, and LD for vmlinux_link
-ifeq ($(ld-name),gold)
-LDFLAGS		+= -plugin LLVMgold.so
-endif
-# use llvm-ar for building symbol tables from IR files, and llvm-dis instead
-# of objdump for processing symbol versions and exports
-LLVM_AR		:= llvm-ar
-LLVM_NM		:= llvm-nm
-export LLVM_AR LLVM_NM
-# Set O3 optimization level for LTO
-LDFLAGS		+= --plugin-opt=O3
 endif
 
 # The arch Makefile can set ARCH_{CPP,A,C}FLAGS to override the default
@@ -678,13 +645,8 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, int-in-bool-context)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, address-of-packed-member)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, attribute-alias)
 
-ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
-KBUILD_CFLAGS	+= $(call cc-option,-ffunction-sections,)
-KBUILD_CFLAGS	+= $(call cc-option,-fdata-sections,)
-endif
-
-ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
-KBUILD_CFLAGS  += -O3
+ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
+KBUILD_CFLAGS	+= -Os
 else
 ifdef CONFIG_PROFILE_ALL_BRANCHES
 KBUILD_CFLAGS	+= -O2
@@ -785,6 +747,7 @@ ifdef CONFIG_KCOV
 endif
 
 ifeq ($(cc-name),clang)
+KBUILD_CPPFLAGS += $(call cc-option,-Qunused-arguments,)
 KBUILD_CFLAGS += $(call cc-disable-warning, format-invalid-specifier)
 KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
 KBUILD_CFLAGS += $(call cc-disable-warning, duplicate-decl-specifier)
@@ -803,10 +766,6 @@ else
 # These warnings generated too much noise in a regular build.
 # Use make W=1 to enable them (see scripts/Makefile.extrawarn)
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
-endif
-
-ifeq ($(ld-name),lld)
-LDFLAGS += -O3
 endif
 
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
@@ -870,47 +829,6 @@ endif
 # We trigger additional mismatches with less inlining
 ifdef CONFIG_DEBUG_SECTION_MISMATCH
 KBUILD_CFLAGS += $(call cc-option, -fno-inline-functions-called-once)
-endif
-
-ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
-KBUILD_CFLAGS	+= $(call cc-option,-ffunction-sections,)
-KBUILD_CFLAGS	+= $(call cc-option,-fdata-sections,)
-endif
-
-ifdef CONFIG_LTO_CLANG
-ifdef CONFIG_THINLTO
-lto-clang-flags	:= -flto=thin
-ifeq ($(ld-name),lld)
-LDFLAGS		+= --thinlto-cache-dir=.thinlto-cache
-endif
-else
-lto-clang-flags	:= -flto
-endif
-lto-clang-flags += -fvisibility=default $(call cc-option, -fsplit-lto-unit)
-
-# Limit inlining across translation units to reduce binary size
-LD_FLAGS_LTO_CLANG := -mllvm -import-instr-limit=5
-
-KBUILD_LDFLAGS += $(LD_FLAGS_LTO_CLANG)
-KBUILD_LDFLAGS_MODULE += $(LD_FLAGS_LTO_CLANG)
-
-KBUILD_LDS_MODULE += $(srctree)/scripts/module-lto.lds
-
-# allow disabling only clang LTO where needed
-DISABLE_LTO_CLANG := -fno-lto
-export DISABLE_LTO_CLANG
-endif
-
-ifdef CONFIG_LTO
-lto-flags	:= $(lto-clang-flags)
-KBUILD_CFLAGS	+= $(lto-flags)
-
-DISABLE_LTO	:= $(DISABLE_LTO_CLANG)
-export DISABLE_LTO
-
-# LDFINAL_vmlinux and LDFLAGS_FINAL_vmlinux can be set to override
-# the linker and flags for vmlinux_link.
-export LDFINAL_vmlinux LDFLAGS_FINAL_vmlinux
 endif
 
 # arch Makefile may override CC so keep this after arch Makefile is included
@@ -982,10 +900,6 @@ LDFLAGS_BUILD_ID = $(patsubst -Wl$(comma)%,%,\
 			      $(call cc-ldoption, -Wl$(comma)--build-id,))
 KBUILD_LDFLAGS_MODULE += $(LDFLAGS_BUILD_ID)
 LDFLAGS_vmlinux += $(LDFLAGS_BUILD_ID)
-
-ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
-LDFLAGS_vmlinux	+= $(call ld-option, --gc-sections,)
-endif
 
 ifeq ($(CONFIG_STRIP_ASM_SYMS),y)
 LDFLAGS_vmlinux	+= $(call ld-option, -X,)
@@ -1089,26 +1003,23 @@ core-y		:= $(patsubst %/, %/built-in.o, $(core-y))
 drivers-y	:= $(patsubst %/, %/built-in.o, $(drivers-y))
 net-y		:= $(patsubst %/, %/built-in.o, $(net-y))
 libs-y1		:= $(patsubst %/, %/lib.a, $(libs-y))
-libs-y2		:= $(filter-out %.a, $(patsubst %/, %/built-in.o, $(libs-y)))
+libs-y2		:= $(patsubst %/, %/built-in.o, $(libs-y))
+libs-y		:= $(libs-y1) $(libs-y2)
 virt-y		:= $(patsubst %/, %/built-in.o, $(virt-y))
 
 # Externally visible symbols (used by link-vmlinux.sh)
 export KBUILD_VMLINUX_INIT := $(head-y) $(init-y)
-export KBUILD_VMLINUX_MAIN := $(core-y) $(libs-y2) $(drivers-y) $(net-y) $(virt-y)
-export KBUILD_VMLINUX_LIBS := $(libs-y1)
+export KBUILD_VMLINUX_MAIN := $(core-y) $(libs-y) $(drivers-y) $(net-y) $(virt-y)
 export KBUILD_LDS          := arch/$(SRCARCH)/kernel/vmlinux.lds
 export LDFLAGS_vmlinux
 # used by scripts/pacmage/Makefile
 export KBUILD_ALLDIRS := $(sort $(filter-out arch/%,$(vmlinux-alldirs)) arch Documentation include samples scripts tools)
 
-vmlinux-deps := $(KBUILD_LDS) $(KBUILD_VMLINUX_INIT) $(KBUILD_VMLINUX_MAIN) $(KBUILD_VMLINUX_LIBS)
+vmlinux-deps := $(KBUILD_LDS) $(KBUILD_VMLINUX_INIT) $(KBUILD_VMLINUX_MAIN)
 
-ARCH_POSTLINK := $(wildcard $(srctree)/arch/$(SRCARCH)/Makefile.postlink)
-
-# Final link of vmlinux with optional arch pass after final link
-    cmd_link-vmlinux =                                                 \
-	$(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_vmlinux) ;       \
-	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)
+# Final link of vmlinux
+      cmd_link-vmlinux = $(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_vmlinux)
+quiet_cmd_link-vmlinux = LINK    $@
 
 # Include targets which we want to
 # execute if the rest of the kernel build went well.
@@ -1186,25 +1097,6 @@ prepare0: archprepare
 
 # All the preparing..
 prepare: prepare0
-
-# Make sure we're using a supported toolchain with LTO_CLANG
-ifdef CONFIG_LTO_CLANG
-  ifneq ($(call clang-ifversion, -ge, 0500, y), y)
-	@echo Cannot use CONFIG_LTO_CLANG: requires clang 5.0 or later >&2 && exit 1
-  endif
-  ifneq ($(ld-name),lld)
-    ifneq ($(call gold-ifversion, -ge, 112000000, y), y)
-    	@echo Cannot use CONFIG_LTO_CLANG: requires LLD or GNU gold 1.12 or later >&2 && exit 1
-    endif
-  endif
-endif
-# Make sure compiler supports LTO flags
-ifdef lto-flags
-  ifeq ($(call cc-option, $(lto-flags)),)
-	@echo Cannot use CONFIG_LTO: $(lto-flags) not supported by compiler \
-		>&2 && exit 1
-  endif
-endif
 
 # Generate some files
 # ---------------------------------------------------------------------------
@@ -1421,7 +1313,6 @@ $(clean-dirs):
 
 vmlinuxclean:
 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/link-vmlinux.sh clean
-	$(Q)$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) clean)
 
 clean: archclean vmlinuxclean
 
@@ -1667,8 +1558,8 @@ clean: $(clean-dirs)
 		-o -name '*.symtypes' -o -name 'modules.order' \
 		-o -name modules.builtin -o -name '.tmp_*.o.*' \
 		-o -name '*.ll' \
-		-o -name '*.gcno' \
-		-o -name '*.*.symversions' \) -type f -print | xargs rm -f
+		-o -name '*.gcno' \) -type f -print | xargs rm -f
+
 # Generate tags for editors
 # ---------------------------------------------------------------------------
 quiet_cmd_tags = GEN     $@
