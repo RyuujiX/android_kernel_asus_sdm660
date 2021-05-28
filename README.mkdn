@@ -1,4 +1,4 @@
-SkyWalker 4.4.x LTO Kernel Source
+SkyWalker 4.4.x Kernel Source
 ====================================
 
 Getting Started
@@ -13,19 +13,6 @@ For Initial , Recommended to install some package first. Do this:
 
 ```bash
    sudo apt-get install -y llvm ld clang g++multilib gcc libncurses5 libstdc++6
-```
-
-Build it with LTO Clang Support
--------------------------------
-This Kernel is implemented LTO ( Link Time Optimization ),
-so if u want to build , use Clang with LTO Support like
-Proton , STRIX , etc .
-
-Add / Export this strings if u want to build :
-
-```bash
-   LD=ld.lld
-   LD_LIBRARY_PATH=<DIRECTORY OF CLANG>/lib
 ```
 
 For LED Based Vibration ROMs

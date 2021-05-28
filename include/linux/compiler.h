@@ -201,29 +201,6 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
 # define unreachable() do { } while (1)
 #endif
 
-/*
- * KENTRY - kernel entry point
- * This can be used to annotate symbols (functions or data) that are used
- * without their linker symbol being referenced explicitly. For example,
- * interrupt vector handlers, or functions in the kernel image that are found
- * programatically.
- *
- * Not required for symbols exported with EXPORT_SYMBOL, or initcalls. Those
- * are handled in their own way (with KEEP() in linker scripts).
- *
- * KENTRY can be avoided if the symbols in question are marked as KEEP() in the
- * linker script. For example an architecture could KEEP() its entire
- * boot/exception vector code rather than annotate each function and data.
- */
-#ifndef KENTRY
-# define KENTRY(sym)						\
-	extern typeof(sym) sym;					\
-	static const unsigned long __kentry_##sym		\
-	__used							\
-	__attribute__((section("___kentry" "+" #sym ), used))	\
-	= (unsigned long)&sym;
-#endif
-
 #ifndef RELOC_HIDE
 # define RELOC_HIDE(ptr, off)					\
   ({ unsigned long __ptr;					\
@@ -467,10 +444,6 @@ unsigned long read_word_at_a_time(const void *addr)
 #define __visible
 #endif
 
-#ifndef __norecordmcount
-#define __norecordmcount
-#endif
-
 /*
  * Assume alignment of return value.
  */
@@ -478,9 +451,6 @@ unsigned long read_word_at_a_time(const void *addr)
 #define __assume_aligned(a, ...)
 #endif
 
-#ifndef __noreorder
-#define __noreorder
-#endif
 
 /* Are two types/vars the same type (ignoring qualifiers)? */
 #ifndef __same_type
