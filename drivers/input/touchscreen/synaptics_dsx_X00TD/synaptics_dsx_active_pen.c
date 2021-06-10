@@ -41,7 +41,7 @@
 #include <linux/input/synaptics_dsx_X00TD.h>
 #include "synaptics_dsx_core.h"
 
-#define APEN_PHYS_NAME "synaptics_dsx/active_pen"
+#define APEN_PHYS_NAME "synaptics_dsx_X00TD/active_pen"
 
 #define ACTIVE_PEN_MAX_PRESSURE_16BIT 65535
 #define ACTIVE_PEN_MAX_PRESSURE_8BIT 255
