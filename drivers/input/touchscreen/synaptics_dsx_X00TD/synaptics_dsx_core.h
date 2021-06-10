@@ -38,16 +38,14 @@
 #define SYNAPTICS_DS5 (1 << 1)
 #define SYNAPTICS_DSX_DRIVER_PRODUCT (SYNAPTICS_DS4 | SYNAPTICS_DS5)
 #define SYNAPTICS_DSX_DRIVER_VERSION 0x2070
-// Huaqin add for vsp/vsn. by zhengwu.lu. at 2018/03/07  start
-#define SYNA_POWER_SOURCE_CUST_EN  1
+#define SYNA_POWER_SOURCE_CUST_EN 1
 
 #if SYNA_POWER_SOURCE_CUST_EN
-#define LCM_LAB_MIN_UV                      6000000
-#define LCM_LAB_MAX_UV                      6000000
-#define LCM_IBB_MIN_UV                      6000000
-#define LCM_IBB_MAX_UV                      6000000
+#define LCM_LAB_MIN_UV	6000000
+#define LCM_LAB_MAX_UV	6000000
+#define LCM_IBB_MIN_UV	6000000
+#define LCM_IBB_MAX_UV	6000000
 #endif
-// Huaqin add for vsp/vsn. by zhengwu.lu. at 2018/03/07  end
 
 #include <linux/version.h>
 #ifdef CONFIG_FB
@@ -336,6 +334,7 @@ struct synaptics_rmi4_device_info {
  * @sensor_max_y: maximum y coordinate for 2D touch
  * @force_min: minimum force value
  * @force_max: maximum force value
+ * @set_wakeup_gesture: location of set wakeup gesture
  * @flash_prog_mode: flag to indicate flash programming mode status
  * @irq_enabled: flag to indicate attention interrupt enable status
  * @fingers_on_2d: flag to indicate presence of fingers in 2D area
@@ -407,6 +406,7 @@ struct synaptics_rmi4_data {
 	int sensor_max_y;
 	int force_min;
 	int force_max;
+	int set_wakeup_gesture;
 	bool flash_prog_mode;
 	bool irq_enabled;
 	bool fingers_on_2d;
@@ -430,14 +430,12 @@ struct synaptics_rmi4_data {
 			bool enable);
 	void (*report_touch)(struct synaptics_rmi4_data *rmi4_data,
 			struct synaptics_rmi4_fn *fhandler);
-    // Huaqin add for vsp/vsn. by zhengwu.lu. at 2018/03/07  start
 #if SYNA_POWER_SOURCE_CUST_EN
 	struct regulator *lcm_lab;
 	struct regulator *lcm_ibb;
 	atomic_t lcm_lab_power;
 	atomic_t lcm_ibb_power;
 #endif
-// Huaqin add for vsp/vsn. by zhengwu.lu. at 2018/03/07  end
 };
 
 struct synaptics_dsx_bus_access {
