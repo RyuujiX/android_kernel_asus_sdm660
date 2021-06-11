@@ -1128,24 +1128,30 @@ static ssize_t syna_gesture_mode_get_proc(struct file *file,
 static ssize_t syna_gesture_mode_set_proc(struct file *filp,
                         const char __user *buffer, size_t count, loff_t *off)
 {
-  int ret = 0;
-  
-  ret = kstrtol_from_user(buffer, count, 0, &syna_gesture_mode);
-  if (!ret) {
-    if (syna_gesture_mode == 0) {
-      syna_gesture_mode = 0;
-      syna_rmi4_data->enable_wakeup_gesture = 0;
-    } else {
-      syna_gesture_mode = 0x1FF;
-      syna_rmi4_data->enable_wakeup_gesture = 1;
-    }
-  }
-  else {
-    pr_err("set gesture mode failed\n");
-  }
-  pr_err("syna_gesture_mode = 0x%x, enable_wakeup_gesture = %d \n", (unsigned int)syna_gesture_mode, syna_rmi4_data->enable_wakeup_gesture);
+	char msg[20];
+	int ret = 0;
 
-  return count;
+	ret = copy_from_user(msg, buffer, count);
+	if (ret) {
+		return -EFAULT;
+	}
+
+	ret = kstrtol(msg, 0, &syna_gesture_mode);
+	if (!ret) {
+		if (syna_gesture_mode == 0) {
+			syna_gesture_mode = 0;
+			syna_rmi4_data->enable_wakeup_gesture = 0;
+		} else {
+			syna_gesture_mode = 0x1FF;
+			syna_rmi4_data->enable_wakeup_gesture = 1;
+		}
+	}
+	else {
+		pr_err("set gesture mode failed\n");
+	}
+	pr_err("syna_gesture_mode = 0x%x, enable_wakeup_gesture = %d \n", (unsigned int)syna_gesture_mode, syna_rmi4_data->enable_wakeup_gesture);
+
+	return count;
 }
 
 static struct proc_dir_entry *syna_gesture_mode_proc = NULL;
