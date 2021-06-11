@@ -71,10 +71,25 @@ On Branch r2/hmp and r2/eas:
    git add . && \
    git commit -m "Remove R WLAN DRIVERS" && \
    git revert 9b488cfbdd6a02aa84d7de76b7d6bbd4ad10b9d9 --no-commit && \
-   git commit -m "Use Back Pie CAF 7.2 WiFi Drivers"
+   git commit -m "Use Back Pie CAF 7.2 WiFi Drivers" && \
+   git cherry-pick 1ceac8f3cc7f5a770a98bef65c4ab4c797cddbd2
 ```
 
 I Recommend to use Pie WiFi Drivers coz it's more optimal :)
+
+Compile for Android Pie
+-----------------------
+
+For X00TD, Just Use Pie WiFi Driver.
+
+For X01BD, do this also after Using Pie WiFi Driver:
+
+On Branch r2/hmp and r2/eas:
+```bash
+   git revert be578e2def2d7a67d6643335d016008f7bee8da8 --no-commit && \
+   git revert 5c27bb6d8547112a8b815742c5dbcaae520b4497 --no-commit && \
+   git commit -m "Fix WiFi for Android 9"
+```
 
 EAS Perf HAL
 ------------
