@@ -1,0 +1,27 @@
+<b><#selectbg_g>June 17,2021</#></b>
+
+  <*> Switched Compiler to DragonTC 10</*>
+  <*> Bringup SkyWalker-Akatsuki</*>
+  <*> Merge Linux Stable 4.4.273 Tag</*>
+
+<b><#selectbg_g>June 16,2021</#></b>
+
+  <*> Revert "drivers: power: Disable BCL"</*>
+  <*> Spectrum: Update</*>
+
+<b><#selectbg_g>June 14,2021</#></b>
+
+  <*> AK3: Update</*>
+  <*> (OFI) Revert "qcacld-3.0: Fix OOB in wma_stats_event_handler"</*>
+
+<b><#selectbg_g>June 12,2021</#></b>
+
+  <*> Revert "Backport new vmalloc for "large performance benefits""</*>
+  <*> Revert "Fix direct references to HZ (squashed commit)"</*>
+  <*> X00TD: drivers: touchscreen: Add back tpd_gesture support</*>
+  
+<b><#selectbg_g>June 11,2021</#></b>
+
+  <*> [SQUASH] Reverted some "Reduce Latency" Commits</*>
+  <*> X00TD: touchscreen panels update them to support X00T Roms</*>
+  <*> Revert "X00TD: drivers: input: touchscreen: replace kstrtol() with kstrtol_from_user()"</*>
