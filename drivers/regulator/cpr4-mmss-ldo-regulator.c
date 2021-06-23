@@ -36,7 +36,7 @@
 
 #include "cpr3-regulator.h"
 
-#define SDM660_MMSS_FUSE_CORNERS	7
+#define SDM660_MMSS_FUSE_CORNERS	6
 
 /**
  * struct cpr4_sdm660_mmss_fuses - MMSS specific fuse data for SDM660
@@ -86,7 +86,6 @@ sdm660_mmss_init_voltage_param[SDM660_MMSS_FUSE_CORNERS][2] = {
 	{{65, 34, 38}, {} },
 	{{65, 29, 33}, {} },
 	{{65, 24, 28}, {} },
-	{{65, 24, 28}, {} },
 };
 
 static const struct cpr3_fuse_param sdm660_cpr_fusing_rev_param[] = {
@@ -102,7 +101,6 @@ sdm660_mmss_offset_voltage_param[SDM660_MMSS_FUSE_CORNERS][2] = {
 	{{65, 52, 55}, {} },
 	{{65, 48, 51}, {} },
 	{{65, 44, 47}, {} },
-	{{65, 42, 43}, {} },
 };
 
 static const struct cpr3_fuse_param
@@ -113,7 +111,6 @@ sdm660_mmss_ldo_enable_param[SDM660_MMSS_FUSE_CORNERS][2] = {
 	{{73, 59, 59}, {} },
 	{{73, 58, 58}, {} },
 	{{73, 57, 57}, {} },
-	{{73, 56, 56}, {} },
 };
 
 static const struct cpr3_fuse_param sdm660_ldo_cpr_cl_enable_param[] = {
@@ -131,8 +128,6 @@ static const int sdm660_mmss_fuse_ref_volt[SDM660_MMSS_FUSE_CORNERS] = {
 	790000,
 	870000,
 	925000,
-	// 1070000,
-	1205000,
 };
 
 #define SDM660_MMSS_FUSE_STEP_VOLT		10000
