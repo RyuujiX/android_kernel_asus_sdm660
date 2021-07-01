@@ -15,7 +15,6 @@
 <b><#selectbg_g>June 25,2021</#></b>
 
   <*> Bringup LTO</*>
-  <*> {X00TD,X01BD}_defconfig: Enable Optimize for Performance</*>
   <*> Revert "power: Hack Charging Speed Again"</*>
   <*> ARM: dts: Adjust Voltage Ceiling</*>
   <*> X01BD: HMP: CPU big 2.2GHz + GPU 750MHz</*>
