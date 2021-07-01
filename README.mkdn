@@ -1,4 +1,4 @@
-SkyWalker 4.4.x Kernel Source
+SkyWalker 4.4.x LTO Kernel Source
 ====================================
 
 Getting Started
@@ -14,6 +14,19 @@ For Initial , Recommended to install some package first. Do this:
    sudo apt-get install -y llvm ld clang g++multilib gcc libncurses5 libstdc++6
 ```
 
+Build it with LTO Clang Support
+-------------------------------
+This Kernel is implemented LTO ( Link Time Optimization ),
+so if u want to build , use Clang with LTO Support like
+Proton , STRIX , etc .
+
+Add / Export this strings if u want to build :
+
+```bash
+   LD=ld.lld
+   LD_LIBRARY_PATH=<DIRECTORY OF CLANG>/lib
+```
+
 OverClocked Kernel
 ------------------
 This Kernel is Overclocked. If u want just go Back to Stock Freq, Do this:
@@ -21,7 +34,7 @@ This Kernel is Overclocked. If u want just go Back to Stock Freq, Do this:
 On Branch r2/hmp:
 ```bash
    git revert f32476500958218eb1267816bee1eb4068c961e1 --no-commit && \
-   git revert 7c6081320f73ea701cc18f8f2001460a86cb6bdf --no-commit && \
+   git revert b87675e4eaedf46ae49fedf813a4d58b08e50264 --no-commit && \
    git commit -m "Use Back Stock Freq"
 ```
 
@@ -35,8 +48,8 @@ If u want to restore SoC Config , then do this also after restoring Stock Freq:
 
 On Branch r2/hmp:
 ```bash
-   git revert 2077502210068a2b166f3e7e5279648112cfc41b --no-commit && \
-   git revert 4ae5a1dd6908c3694287c35a69e09157ee8b50e1 --no-commit && \
+   git revert a1100d5d427b23c176bf832a65c770ef3da38cf5 --no-commit && \
+   git revert f2ba0f2d5e61d407c0e5a2d7df099bb8703ced90 --no-commit && \
    git commit -m "Restore Stock SoC Config"
 ```
 

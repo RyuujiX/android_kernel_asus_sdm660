@@ -1,27 +1,34 @@
+<b><#selectbg_g>July 1,2021</#></b>
+
+  <*> Bringup SkyWalker-Raion</*>
+
+<b><#selectbg_g>June 30,2021</#></b>
+
+  <*> Merged Linux Stable 4.4.274</*>
+  <*> drivers: power: Improve Charging Speed #2</*>
+
+<b><#selectbg_g>June 26,2021</#></b>
+
+  <*> (EAS) [SQUASH] Revert Simple Thermal and "Add API to mark IRQs and kthreads as performance critical"</*>
+  <*> Merged CAF 'LA.UM.9.2.r1-03400-SDMxx0.0'</*>
+
+<b><#selectbg_g>June 25,2021</#></b>
+
+  <*> Bringup LTO</*>
+  <*> {X00TD,X01BD}_defconfig: Enable Optimize for Performance</*>
+  <*> Revert "power: Hack Charging Speed Again"</*>
+  <*> ARM: dts: Adjust Voltage Ceiling</*>
+  <*> X01BD: HMP: CPU big 2.2GHz + GPU 750MHz</*>
+  <*> (HMP) Rework SoC Config</*>
+  
+<b><#selectbg_g>June 23,2021</#></b>
+
+  <*> X00TD: drivers: input/nvt: Set dt2w and gestures seperately</*>
+  <*> power: qpnp-smb2: Use LIPO instead of LION</*>
+  <*> (HMP) {X00TD,X01BD}_defconfig: Set back Cubic as default TCP</*>
+  <*> Revert "block: increase read ahead kb to 2048"</*>
+
 <b><#selectbg_g>June 17,2021</#></b>
 
-  <*> Switched Compiler to DragonTC 10</*>
-  <*> Bringup SkyWalker-Akatsuki</*>
-  <*> Merge Linux Stable 4.4.273 Tag</*>
-
-<b><#selectbg_g>June 16,2021</#></b>
-
-  <*> Revert "drivers: power: Disable BCL"</*>
-  <*> Spectrum: Update</*>
-
-<b><#selectbg_g>June 14,2021</#></b>
-
-  <*> AK3: Update</*>
-  <*> (OFI) Revert "qcacld-3.0: Fix OOB in wma_stats_event_handler"</*>
-
-<b><#selectbg_g>June 12,2021</#></b>
-
-  <*> Revert "Backport new vmalloc for "large performance benefits""</*>
-  <*> Revert "Fix direct references to HZ (squashed commit)"</*>
-  <*> X00TD: drivers: touchscreen: Add back tpd_gesture support</*>
-  
-<b><#selectbg_g>June 11,2021</#></b>
-
-  <*> [SQUASH] Reverted some "Reduce Latency" Commits</*>
-  <*> X00TD: touchscreen panels update them to support X00T Roms</*>
-  <*> Revert "X00TD: drivers: input: touchscreen: replace kstrtol() with kstrtol_from_user()"</*>
+  <*> {X00TD,X01BD}_defconfig: Enable ALMK and Some Other Configs</*>
+  <*> [SQUASH] Remove PRLMK stuffs and some changes on process_reclaim</*>
