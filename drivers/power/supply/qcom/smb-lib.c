@@ -3483,10 +3483,6 @@ void smblib_asus_monitor_start(struct smb_charger *chg, int time)
 #define SMBCHG_FAST_CHG_CURRENT_VALUE_2500MA	0x64
 #define SMBCHG_FAST_CHG_CURRENT_VALUE_3000MA 	0x78
 
-#ifdef CONFIG_MACH_ASUS_X01BD
-#define ASUS_CUSTOM_JEITA_SET_MODIFY
-#endif
-
 enum JEITA_state {
 	JEITA_STATE_INITIAL,
 	JEITA_STATE_LESS_THAN_0,
