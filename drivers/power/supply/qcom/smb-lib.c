@@ -78,6 +78,7 @@ int asus_get_prop_batt_volt(struct smb_charger *chg);
 int asus_get_prop_batt_capacity(struct smb_charger *chg);
 int asus_get_prop_batt_health(struct smb_charger *chg);
 int asus_get_prop_usb_present(struct smb_charger *chg);
+int flag_repeat = 0;
 
 enum ADAPTER_ID {
 	NONE = 0,
@@ -3419,7 +3420,7 @@ void asus_batt_RTC_work(struct work_struct *dat)
 	unsigned long batflags;
 	struct timespec new_batAlarm_time;
 	struct timespec mtNow;
-	int RTCSetInterval = 60;
+	int RTCSetInterval = 10800;
 
 	if (!smbchg_dev) {
 		pr_err("%s: driver not ready yet!\n", __func__);
@@ -3430,7 +3431,7 @@ void asus_batt_RTC_work(struct work_struct *dat)
 	new_batAlarm_time.tv_sec = 0;
 	new_batAlarm_time.tv_nsec = 0;
 
-	RTCSetInterval = 60;
+	RTCSetInterval = 10800;
 
 	new_batAlarm_time.tv_sec = mtNow.tv_sec + RTCSetInterval;
 	pr_debug("%s: alarm start after %ds\n", __func__, RTCSetInterval);
@@ -4034,6 +4035,8 @@ static void CHG_TYPE_judge(struct smb_charger *chg)
 	/* read charger ID via pm660 gpio3 */
 	adc_result = get_ID_vadc_voltage();
 
+	if(flag_repeat == 0)
+   {
 	/* vdm1 < 0.3v */
 	if (adc_result <= VADC_THD_300MV) {
 		ret = gpio_direction_output(global_gpio->ADCPWREN_PMI_GP1, 1);
@@ -4045,20 +4048,24 @@ static void CHG_TYPE_judge(struct smb_charger *chg)
 
 		msleep(500);
 
+		if(flag_repeat == 0)
 		/* vdm2 > 1v */
 		adc_result = get_ID_vadc_voltage();
 		if (adc_result >= VADC_THD_1000MV) {
-			ASUS_ADAPTER_ID = OTHERS;
+			{ ASUS_ADAPTER_ID = OTHERS;
+			    flag_repeat = 1;
+			}
 		} else {
 			/* 0.675 < adc_result < 0.851 */
 			if (adc_result >= MIN_750K && adc_result <= MAX_750K) {
 				ASUS_ADAPTER_ID = ASUS_750K;
+				flag_repeat = 1;
 			/* 0.306 < adc_result <  0.406 */
 			} else if (adc_result >= MIN_200K &&
-					adc_result <= MAX_200K)
+					adc_result <= MAX_200K){
 				ASUS_ADAPTER_ID = ASUS_200K;
-			else
-				ASUS_ADAPTER_ID = OTHERS;
+			    flag_repeat = 1;
+			}
 		}
 	/* vdm1 */
 	} else {
@@ -4068,7 +4075,16 @@ static void CHG_TYPE_judge(struct smb_charger *chg)
 			ASUS_ADAPTER_ID = OTHERS;
 	}
 
-	pr_debug("CHG_TYPE_judge  ASUS_ADAPTER_ID=%d\n", ASUS_ADAPTER_ID);
+    }
+
+    if(ASUS_ADAPTER_ID == 4||ASUS_ADAPTER_ID == 3) //Non-Asus-Charger
+        printk("OTHER_CHARGER\n");
+
+       else if(ASUS_ADAPTER_ID == 1||ASUS_ADAPTER_ID == 2)//Asus-Charger
+                printk("ASUS_CHARGER\n");
+
+               else if(ASUS_ADAPTER_ID == 3)
+                        printk("POWER_BANK");
 }
 
 void asus_adapter_adc_work(struct work_struct *work)
@@ -4092,29 +4108,7 @@ void asus_adapter_adc_work(struct work_struct *work)
 
 	msleep(5);
 	CHG_TYPE_judge(smbchg_dev);
-
-	/* determine current-setting value for DCP type AC: */
-	switch (ASUS_ADAPTER_ID) {
-	case ASUS_750K:
 		usb_max_current = ICL_4000mA;
-		break;
-
-	case ASUS_200K:
-		usb_max_current = ICL_4000mA;
-		break;
-
-	case PB:
-		usb_max_current = ICL_4000mA;
-		break;
-
-	case OTHERS:
-		usb_max_current = ICL_4000mA;
-		break;
-
-	case ADC_NOT_READY:
-		usb_max_current = ICL_4000mA;
-		break;
-	}
 
 	rc = smblib_set_usb_suspend(smbchg_dev, 0);
 	if (rc < 0)
@@ -4134,8 +4128,8 @@ void asus_adapter_adc_work(struct work_struct *work)
 	else
 		pr_debug("%s: Pull low USBSW_S\n", __func__);
 
-	pr_debug("%s: ASUS_ADAPTER_ID = %s, setting mA = 0x%x\n", __func__,
-			asus_id[ASUS_ADAPTER_ID], usb_max_current);
+	printk("%s:setting mA = 0x%x\n", __func__,
+			usb_max_current);
 
 	/* Set current:
 	 * reg=1370, bit7-bit0=
@@ -4153,6 +4147,7 @@ void asus_insertion_initial_settings(struct smb_charger *chg)
 {
 	int rc;
 	u8 USBIN_cc;
+	flag_repeat = 0;
 
 	rc = smblib_write(chg, PRE_CHARGE_CURRENT_CFG_REG, 0x06);
 	if (rc < 0)
