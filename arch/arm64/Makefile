@@ -15,12 +15,8 @@ CPPFLAGS_vmlinux.lds = -DTEXT_OFFSET=$(TEXT_OFFSET)
 OBJCOPYFLAGS	:=-O binary -R .note -R .note.gnu.build-id -R .comment -S
 GZFLAGS		:=-9
 
-ifeq ($(CONFIG_RELOCATABLE), y)
-# Pass --no-apply-dynamic-relocs to restore pre-binutils-2.27 behaviour
-# for relative relocs, since this leads to better Image compression
-# with the relocation offsets always being zero.
-LDFLAGS_vmlinux		+= -shared -Bsymbolic -z notext -z norelro \
-			$(call ld-option, --no-apply-dynamic-relocs)
+ifneq ($(CONFIG_RELOCATABLE),)
+LDFLAGS_vmlinux		+= -pie -Bsymbolic
 endif
 
 KBUILD_DEFCONFIG := defconfig
