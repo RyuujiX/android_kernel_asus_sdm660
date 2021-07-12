@@ -1,33 +1,38 @@
-<b><#selectbg_g>July 1,2021</#></b>
+<b><#selectbg_g>July 13,2021</#></b>
 
-  <*> Bringup SkyWalker-Raion</*>
+  <*> Bringup SkyWalker-Hoshi</*>
+  <*> Compiled with Elastics Full Clang 13</*>
+  <*> Merged Linux Stable Google Tag 'v4.4.275'</*>
 
-<b><#selectbg_g>June 30,2021</#></b>
+<b><#selectbg_g>July 12,2021</#></b>
 
-  <*> Merged Linux Stable 4.4.274</*>
-  <*> drivers: power: Improve Charging Speed #2</*>
+  <*> [SQUASH] Drop LTO and Some Related Commits</*>
 
-<b><#selectbg_g>June 26,2021</#></b>
+<b><#selectbg_g>July 11,2021</#></b>
 
-  <*> (EAS) [SQUASH] Revert Simple Thermal and "Add API to mark IRQs and kthreads as performance critical"</*>
-  <*> Merged CAF 'LA.UM.9.2.r1-03400-SDMxx0.0'</*>
-
-<b><#selectbg_g>June 25,2021</#></b>
-
-  <*> Bringup LTO</*>
-  <*> Revert "power: Hack Charging Speed Again"</*>
-  <*> ARM: dts: Adjust Voltage Ceiling</*>
-  <*> X01BD: HMP: CPU big 2.2GHz + GPU 750MHz</*>
-  <*> (HMP) Rework SoC Config</*>
+  <*> power: smb-lib: Fix mutex deadlock during PD hard reset</*>
+  <*> power: smb-lib: Fix mutex acquisition deadlock on PD hard reset</*>
+  <*> smb-lib: Remove THERMAL_DAEMON_VOTER on PL_DISABLE</*>
+  <*> power: smb-lib: fix a mutex deadlock issue</*>
+  <*> power: smblib: fix die temp state reporting</*>
+  <*> smb-lib: Some Charging Improvements</*>
+  <*> qpnp-fg-gen3: force setting warm/hot jeita threshold as 97C</*>
+  <*> smb-lib: Disable vote by system thermal</*>
+  <*> power: qcom: smb2: set switcher-power-ok IRQ as wakeup IRQ</*>
+  <*> power: qpnp-fg: Set default sram update period to 5 seconds</*>
+  <*> power: qpnp-fg-gen3: Restore the recharge threshold when out of JEITA</*>
+  <*> (EAS) Enable DarknessV5 CPU Governor</*>
   
-<b><#selectbg_g>June 23,2021</#></b>
+<b><#selectbg_g>July 7,2021</#></b>
 
-  <*> X00TD: drivers: input/nvt: Set dt2w and gestures seperately</*>
-  <*> power: qpnp-smb2: Use LIPO instead of LION</*>
-  <*> (HMP) {X00TD,X01BD}_defconfig: Set back Cubic as default TCP</*>
-  <*> Revert "block: increase read ahead kb to 2048"</*>
+  <*> smb-lib: Undefine ASUS_CUSTOM_JEITA_SET_MODIFY</*>
 
-<b><#selectbg_g>June 17,2021</#></b>
+<b><#selectbg_g>July 4,2021</#></b>
 
-  <*> {X00TD,X01BD}_defconfig: Enable ALMK and Some Other Configs</*>
-  <*> [SQUASH] Remove PRLMK stuffs and some changes on process_reclaim</*>
+  <*> adreno_idler: Disable adreno_idler by default</*>
+  <*> adreno idler: Ramp down more agressively</*>
+  <*> adreno_idler: fix typos :)</*>
+  <*> adreno_idler: fix-up some comments</*>
+  <*> adreno_idler: fix-up type definitions</*>
+  <*> adreno_idler: remove frequency bump</*>
+  <*> adreno_idler: switch to count based instead of time based</*>
