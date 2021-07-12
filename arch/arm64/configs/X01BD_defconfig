@@ -1,4 +1,4 @@
-CONFIG_LOCALVERSION="-SkyWalker-ライオン-Raion-EAS"
+CONFIG_LOCALVERSION="-SkyWalker-ホシ-Hoshi-EAS"
 # CONFIG_LOCALVERSION_AUTO is not set
 # CONFIG_USELIB is not set
 CONFIG_MMU=y
