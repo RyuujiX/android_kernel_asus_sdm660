@@ -1,0 +1,95 @@
+SkyWalker 4.4.x Kernel Source
+====================================
+
+Getting Started
+---------------
+You can use this source if u Want , 
+There is has 2 Variant , HMP and EAS .
+
+Just Copy, Paste, Then Execute the command :)
+
+For Initial , Recommended to install some package first. Do this:
+
+```bash
+   sudo apt-get install -y llvm ld clang g++multilib gcc libncurses5 libstdc++6
+```
+
+OverClocked Kernel
+------------------
+This Kernel is Overclocked. If u want go Back to Stock Freq, Do this:
+
+On Branch r2/hmp:
+```bash
+   git revert 73e65b3e3574d2cf68caefbf0dc63a93ac6d336a --no-commit && \
+   git commit -m "Use Back Stock Freq"
+```
+
+On Branch r2/eas:
+```bash
+   git revert af528a60ea56d212848539c47e8d56fb7e1f6d62 --no-commit && \
+   git revert 73e65b3e3574d2cf68caefbf0dc63a93ac6d336a --no-commit && \
+   git commit -m "Use Back Stock Freq"
+```
+
+For LED Based Vibration ROMs
+----------------------------
+This Kernel is using NLV ( No LED Vibration ) now , So If u want to Enable
+LED Vibration , do this :
+
+On Branch r2/hmp and r2/eas:
+```bash
+   git revert 82b39bb682ee8dbca38b7ca37e4f7c25303fd5ac --no-commit && \
+   git commit -m "Enable LED Vibration"
+```
+
+Using Pie / CAF 7.2 WiFi Drivers
+--------------------------------
+This Kernel is using R / CAF 9.2 WiFi drivers , So if u want to use
+Pie WiFi Driver , do this :
+
+On Branch r2/hmp and r2/eas:
+```bash
+   rm -rf drivers/staging/qcacld-3.0 drivers/staging/fw-api drivers/staging/qca-wifi-host-cmn && \
+   git add . && \
+   git commit -m "Remove R WLAN DRIVERS" && \
+   git revert a56e6c3e5bf1cb792c84daf5c902600c826f790c --no-commit && \
+   git commit -m "Use Back Pie CAF 7.2 WiFi Drivers" 
+```
+
+I Recommend to use Pie WiFi Drivers coz it's more optimal :)
+
+Compile for Android Pie
+-----------------------
+
+For X00TD, Just Use Pie WiFi Driver.
+
+For X01BD, do this also after Using Pie WiFi Driver:
+
+On Branch r2/hmp and r2/eas:
+```bash
+   git revert be578e2def2d7a67d6643335d016008f7bee8da8 --no-commit && \
+   git revert 5c27bb6d8547112a8b815742c5dbcaae520b4497 --no-commit && \
+   git commit -m "Fix WiFi for Android 9"
+```
+
+EAS Perf HAL
+------------
+Usually, X00TD and X01BD Device Trees is using HMP Perf HAL as default.
+
+So, if u want to build ROM with Prebuilt EAS Kernel, Pick this EAS Perf HAL:
+
+https://github.com/RyuujiX/AnyKernel3/tree/injectorx-eas/tools/SDM660PerfHAL
+
+Spectrum Support
+----------------
+Pick Spectrum Script from Here: https://github.com/RyuujiX/spectrum , then rename it to init.spectrum.rc
+
+HMP : ryuu
+
+EAS : eas ( not spectrum , just advanced configuration)
+
+Or , make it by ur self .
+
+My CI Builder Script
+--------------------
+Check it out: https://github.com/RyuujiX/builder-xobod-r
