@@ -18,13 +18,13 @@ OverClocked Kernel
 ------------------
 This Kernel is Overclocked. If u want go Back to Stock Freq, Do this:
 
-On Branch r2/hmp:
+On Branch r3/hmp:
 ```bash
    git revert 73e65b3e3574d2cf68caefbf0dc63a93ac6d336a --no-commit && \
    git commit -m "Use Back Stock Freq"
 ```
 
-On Branch r2/eas:
+On Branch r3/eas:
 ```bash
    git revert af528a60ea56d212848539c47e8d56fb7e1f6d62 --no-commit && \
    git revert 73e65b3e3574d2cf68caefbf0dc63a93ac6d336a --no-commit && \
@@ -36,7 +36,7 @@ For LED Based Vibration ROMs
 This Kernel is using NLV ( No LED Vibration ) now , So If u want to Enable
 LED Vibration , do this :
 
-On Branch r2/hmp and r2/eas:
+On Branch r3/hmp and r3/eas:
 ```bash
    git revert 82b39bb682ee8dbca38b7ca37e4f7c25303fd5ac --no-commit && \
    git commit -m "Enable LED Vibration"
@@ -47,7 +47,7 @@ Using Pie / CAF 7.2 WiFi Drivers
 This Kernel is using R / CAF 9.2 WiFi drivers , So if u want to use
 Pie WiFi Driver , do this :
 
-On Branch r2/hmp and r2/eas:
+On Branch r3/hmp and r3/eas:
 ```bash
    rm -rf drivers/staging/qcacld-3.0 drivers/staging/fw-api drivers/staging/qca-wifi-host-cmn && \
    git add . && \
@@ -65,7 +65,7 @@ For X00TD, Just Use Pie WiFi Driver.
 
 For X01BD, do this also after Using Pie WiFi Driver:
 
-On Branch r2/hmp and r2/eas:
+On Branch r3/hmp and r3/eas:
 ```bash
    git revert be578e2def2d7a67d6643335d016008f7bee8da8 --no-commit && \
    git revert 5c27bb6d8547112a8b815742c5dbcaae520b4497 --no-commit && \
