@@ -1,22 +1,19 @@
-<b><#selectbg_g>July 29,2021</#></b>
+<b><#selectbg_g>August 6,2021</#></b>
 
-  <*> Bringup SkyWalker-Natsume</*>
-  <*> Merged Linux Stable Google Tag 'v4.4.277'</*>
-  <*> Merged CAF Tag LA.UM.9.2.r1-03500-SDMxx0.0 for WiFi (NFI) and Kernel</*>
-  <*> Rebased Source again and Reverted Some Changes</*>
-  <*> Compiled with Atom-X Clang 14 and Full O3 Optimizations</*>
-  <*> AK3 Upstreamed</*>
-  <*> Re-Overclock CPU and GPU</*>
-  <*> f2fs: Implement Rapid GC + some changes and fixes</*>
-  <*> ext4: Some Optimizations</*>
-  <*> camera: Merged CAF tag LA.UM.8.2.r2-04400-sdm660.0</*>
-  <*> arm64: lib: memory utilities optimization</*>
-  <*> smb-lib: Stop Charging when battery was 100%</*>
-  <*> Use CONFIG_HZ 100</*>
-  <*> Reduced Touch Latency</*>
-  <*> Spectrum: Update and Fixed some sheets</*>
-  <*> Revert Back to MSM Thermal</*>
-  <*> InteractiveX and Blu_Active Governor disabled</*>
-  <*> (LV) Fixed Vibration Control bug</*>
-  <*> (X00TD) Using Stock "tpd_gesture" DT2W Node</*>
-  <*> And Other Miscellaneous Changes</*>
+  <*> Bringup SkyWalker-Yuuki</*>
+  <*> power: smb138x-charger : initialize power supply as USB</*>
+  <*> {X00TD,X01BD}_defconfig: Enable QPNP_QNOVO</*>
+  <*> Revert "smb-lib: Stop Charging when battery was 100%"</*>
+
+<b><#selectbg_g>August 5,2021</#></b>
+
+  <*> qpnp-fg: adjust percentage calculation formula</*>
+  <*> Merged Linux Stable Google Tag 'v4.4.278'</*>
+
+<b><#selectbg_g>August 3,2021</#></b>
+
+  <*> {X00TD,X01BD}_defconfig: Disable audit support</*>
+  <*> selinux: Remove audit dependency</*>
+  <*> Revert "sdm660: camera: Merge 'LA.UM.8.2.r2-04400-sdm660.0' tag"</*>
+  <*> soc: qcom: subsystem_restart: Prevent kernel panic caused by modem crash</*>
+  <*> kernel/power: faster deepsleep</*>
