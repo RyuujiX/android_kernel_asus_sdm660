@@ -1,3 +1,48 @@
+<b><#selectbg_g>August 15,2021</#></b>
+
+  <*> Bringup SkyWalker-Izumi</*>
+  <*> Merged Linux Stable Google Tag 'v4.4.281'</*>
+
+<b><#selectbg_g>August 14,2021</#></b>
+
+  <*> qpnp-smb2: raise weak charge current to 900mA</*>
+  <*> power: qpnp-fg-gen3: queue work on system_power_efficient_wq</*>
+
+<b><#selectbg_g>August 12,2021</#></b>
+
+  <*> sound: Re-Import Sound Control</*>
+
+<b><#selectbg_g>August 11,2021</#></b>
+
+  <*> (EAS) kernel: {blu_}schedutil: Tune up Rate Limits</*>
+  <*> (EAS) X00TD_defconfig: Enable Blu_Active CPU Governor</*>
+  <*> Revert "X00TD: drivers: input: touchscreen: replace kstrtol() with kstrtol_from_user()"</*>
+  <*> Spectrum: Update + Add Support for EAS</*>
+  <*> Merged Linux Stable Google Tag 'v4.4.280'</*>
+
+<b><#selectbg_g>August 9,2021</#></b>
+
+  <*> (EAS) Switched to Fast Optimization (Ofast)</*>
+  <*> (HMP) Switched to Optimization for Performance (O3)</*>
+  <*> ARM: dts: msm: Disable BCL for sdm660 targets</*>
+  <*> drivers: power: disable bcl</*>
+  <*> (HMP) Enable LLVM Polly Optimizer</*>
+  <*> iosched_switcher: Set BFQ as the screen off scheduler</*>
+  <*> Makefile: vdso: Optimize compilation</*>
+
+<b><#selectbg_g>August 8,2021</#></b>
+
+  <*> TCP: Add Sociopath</*>
+  <*> Merged Linux Stable Google Tag 'v4.4.279'</*>
+  <*> arm: dts: Enable ulps mode and panel-allow-phy-poweroff mode</*>
+  <*> qpnp-fg-gen3: allow write any learned capacity</*>
+  <*> power: qpnp-fg: Don't hold wakelocks</*>
+  <*> power: qpnp-fg: Use default DELTA_SOC without rounding the value</*>
+
+<b><#selectbg_g>August 7,2021</#></b>
+
+  <*> Revert "{X00TD,X01BD}_defconfig: Enable QPNP_QNOVO"</*>
+
 <b><#selectbg_g>August 6,2021</#></b>
 
   <*> Bringup SkyWalker-Yuuki</*>
