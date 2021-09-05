@@ -1,0 +1,83 @@
+SkyWalker 4.4.x Kernel Source
+====================================
+
+Getting Started
+---------------
+You can use this source if u Want , 
+There is has 2 Variant , HMP and EAS .
+
+Just Copy, Paste, Then Execute the command :)
+
+
+OverClocked Kernel
+------------------
+This Kernel is Overclocked. If u want go Back to Stock Freq, Do this:
+
+On Branch r4/hmp & r4/eas:
+```bash
+   git revert ed24c54bb313ede6c2d0a0575cb346af8b361922 --no-commit && \
+   git commit -m "Use Back Stock Freq"
+```
+
+For LED Based Vibration / Haptic ROMs
+----------------------------
+This Kernel is using NLV ( No LED Vibration ) now , So If u want to Enable
+LED Vibration , do this :
+
+On Branch r4/hmp and r4/eas:
+```bash
+   git revert 217db372accfa0154858e8407c258a6fa1e14ae3 --no-commit && \
+   git commit -m "Enable LED Vibration"
+```
+
+Using Pie / CAF 7.2 WiFi Drivers
+--------------------------------
+This Kernel is using R / CAF 9.2 WiFi drivers , So if u want to use
+Pie WiFi Driver , do this :
+
+On Branch r4/hmp and r4/eas:
+```bash
+   rm -rf drivers/staging/qcacld-3.0 drivers/staging/fw-api drivers/staging/qca-wifi-host-cmn && \
+   git add . && \
+   git commit -m "Remove R WLAN DRIVERS" && \
+   git revert 529713d691506617320747f7330c7acf0fe1fa5b --no-commit && \
+   git commit -m "Use Back Pie CAF 7.2 WiFi Drivers" 
+```
+
+I Recommend to use Pie WiFi Drivers coz it's more optimal :)
+
+Compile for Android Pie
+-----------------------
+
+For X00TD, Just Use Pie WiFi Driver.
+
+For X01BD, do this also after Using Pie WiFi Driver:
+
+On Branch r4/hmp and r4/eas:
+```bash
+   git revert be578e2def2d7a67d6643335d016008f7bee8da8 --no-commit && \
+   git revert 5c27bb6d8547112a8b815742c5dbcaae520b4497 --no-commit && \
+   git commit -m "Fix WiFi for Android 9"
+```
+
+EAS Perf HAL
+------------
+Usually, X00TD and X01BD Device Trees is using HMP Perf HAL as default.
+
+So, if u want to build ROM with Prebuilt EAS Kernel, Pick this EAS Perf HAL:
+
+https://github.com/RyuujiX/AnyKernel3/tree/injectorx-eas/tools/SDM660PerfHAL
+
+Spectrum Support
+----------------
+Pick Spectrum Script from Here: https://github.com/RyuujiX/spectrum , then rename it to init.spectrum.rc
+
+HMP : ryuu
+
+EAS : eas
+
+Or , make it by ur self .
+
+My CI Builder Script
+--------------------
+Check it out: https://github.com/RyuujiX/builder-xobod-r

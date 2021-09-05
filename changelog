@@ -1,0 +1,29 @@
+<b><#selectbg_g>September 5,2021</#></b>
+
+  <*> Bringup SkyWalker-Kamado</*>
+  <*> Merged Linux 4.4.282, 283 Tags</*>
+  <*> Merged CAF LA.UM.8.4.1.r1-03100-8x98.0 Tag</*>
+  <*> Merged CAF LA.UM.8.2.r2-04800-sdm660.0 Tag</*>
+  <*> Rebased and Reverted some Sheets</*>
+  <*> Fixed Reboot and Camera issue on some ROMs</*>
+  <*> Fixed Battery Status Not Full when 100%</*>
+  <*> Reworked Charging Hacks</*>
+  <*> Added and Nuked some CPU Governors</*>
+  <*> Enabled Block I/O Tracing for A11 IORap</*>
+  <*> Enable LZ4HC, ZSTD, ZSWAP, ZPOOL, ZBUD, & FRONTSWAP Support</*>
+  <*> Blocked Some Modules and Apps</*>
+  <*> pm660l-dtsi: use analog dimming</*>
+  <*> ARM: nt36672: Disable ESD Check</*>
+  <*> ARM: dts: Disable VDD Restriction by default</*>
+  <*> sdm660: Add arm-cpu-mon nodes for little cluster</*>
+  <*> sdm660-gpu: Disable GPU wake up on touch event</*>
+  <*> power: qpnp-fg-gen3: disable fg_adjust_timebase</*>
+  <*> kernel: power: Workaround for sensor IPC message causing high power consume</*>
+  <*> alarmtimers: Don't fail on wakeup</*>
+  <*> alarmtimers: Relax wakelock</*>
+  <*> kallsyms: reduce size a little on 64-bit</*>
+  <*> msm: kgsl: Remove POPP</*>
+  <*> msm: kgsl: Update GPU idleness check when RB empty</*>
+  <*> AK3: Update Perf HAL, Add Refresh Rate Changer, Add DT2W Patcher</*>
+  <*> (X00TD) EAS OC CPU 1.8 + 2.2GHz</*>
+  <*> (X01BD) Add Stock Freq Variant</*>
