@@ -3814,7 +3814,7 @@ void jeita_rule(void)
 		break;
 	}
 
-	if (smartchg_stop_flag) {
+	if (smartchg_stop_flag || smartchg_stop_flag) {
 		pr_debug("%s: Stop charging, smart = %d\n", __func__,
 				smartchg_stop_flag);
 		charging_enable = EN_BAT_CHG_EN_COMMAND_FALSE;
