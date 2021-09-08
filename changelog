@@ -1,3 +1,10 @@
+<b><#selectbg_g>September 8,2021</#></b>
+
+  <*> Bringup SkyWalker-Kamado-R2</*>
+  <*> smb-lib: Fix Sometimes Not Charging Issue</*>
+  <*> {X00TD,X01BD}_defconfig: Set back CONFIG_HZ to 300</*>
+  <*> Revert "Added support for TTL fixation"</*>
+
 <b><#selectbg_g>September 5,2021</#></b>
 
   <*> Bringup SkyWalker-Kamado</*>
