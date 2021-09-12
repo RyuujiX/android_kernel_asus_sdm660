@@ -118,23 +118,23 @@ static struct step_chg_cfg step_chg_config = {
 static struct jeita_fcc_cfg jeita_fcc_config = {
 	.psy_prop	= POWER_SUPPLY_PROP_TEMP,
 	.prop_name	= "BATT_TEMP",
-	.hysteresis	= 10, /* 1degC hysteresis */
+	.hysteresis	= 0, /* 1degC hysteresis */
 	.fcc_cfg	= {
 		/* TEMP_LOW	TEMP_HIGH	FCC */
 		{0,		100,		600000},
 		{101,		200,		2000000},
 		{201,		450,		3000000},
-		{451,		550,		600000},
+		{451,		550,		1500000},
 	},
 };
 
 static struct jeita_fv_cfg jeita_fv_config = {
 	.psy_prop	= POWER_SUPPLY_PROP_TEMP,
 	.prop_name	= "BATT_TEMP",
-	.hysteresis	= 10, /* 1degC hysteresis */
+	.hysteresis	= 0, /* 1degC hysteresis */
 	.fv_cfg		= {
 		/* TEMP_LOW	TEMP_HIGH	FCC */
-		{0,		100,		4200000},
+		{0,		100,		4400000},
 		{101,		450,		4400000},
 		{451,		550,		4200000},
 	},
