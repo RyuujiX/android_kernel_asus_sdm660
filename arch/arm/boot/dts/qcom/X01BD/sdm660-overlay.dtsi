@@ -38,19 +38,19 @@
 		};
 		
 		CPU4: cpu@100 {
-			clock-frequency = <1958400000>;
+			clock-frequency = <2208000000>;
 		};
 		
 		CPU5: cpu@101 {
-			clock-frequency = <1958400000>;
+			clock-frequency = <2208000000>;
 		};
 		
 		CPU6: cpu@102 {
-			clock-frequency = <1958400000>;
+			clock-frequency = <2208000000>;
 		};
 		
 		CPU7: cpu@103 {
-			clock-frequency = <1958400000>;
+			clock-frequency = <2208000000>;
 		};
 	};
 };
