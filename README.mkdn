@@ -13,8 +13,16 @@ OverClocked Kernel
 ------------------
 This Kernel is Overclocked. If u want go Back to Stock Freq, Do this:
 
-On Branch r4/hmp & r4/eas:
+On Branch r4/hmp:
 ```bash
+   git revert 99322c7380c9112eccd1df203bf9c3f96bf09044 --no-commit && \
+   git revert ed24c54bb313ede6c2d0a0575cb346af8b361922 --no-commit && \
+   git commit -m "Use Back Stock Freq"
+```
+
+On Branch r4/eas:
+```bash
+   git revert 930d2e55af90c889a443e57d3c9541fb9862f8d9 --no-commit && \
    git revert ed24c54bb313ede6c2d0a0575cb346af8b361922 --no-commit && \
    git commit -m "Use Back Stock Freq"
 ```

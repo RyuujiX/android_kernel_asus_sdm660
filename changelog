@@ -1,52 +1,20 @@
-<b><#selectbg_g>September 25,2021</#></b>
+<b><#selectbg_g>October 17,2021</#></b>
 
-  <*> Bringup SkyWalker-Saitou</*>
-  <*> Merged CAF LA.UM.9.2.r1-03600-SDMxx0.0 Tag</*>
+  <*> Bringup SkyWalker-サクラ-Sakura</*>
+  <*> Merged CAF LA.UM.8.2.r2-04900-sdm660.0 Tag</*>
+  <*> Merged Linux Google 4.4.289 Tag</*>
+  <*> [SQUASH] Optimize for Size</*>
+  <*> bpf: Backport + Add eBPF support (Required for Android 12)</*>
 
-<b><#selectbg_g>September 23,2021</#></b>
+<b><#selectbg_g>October 12,2021</#></b>
 
-  <*> {X00TD,X01BD}_defconfig: Disable File Blocker</*>
-  <*> spectrum: Tune Again</*>
-  <*> Merged Linux Google 4.4.284 Tag</*>
+  <*> Merged Linux Google 4.4.287,288 Tags</*>
 
-<b><#selectbg_g>September 18,2021</#></b>
+<b><#selectbg_g>October 6,2021</#></b>
 
-  <*> (EAS) cpufreq: Disable CPU Freq Times by default</*>
-  <*> sdm660: Enable 300MHz CPU Freq</*>
+  <*> Merged Linux Google 4.4.285,286 Tags</*>
 
-<b><#selectbg_g>September 15,2021</#></b>
+<b><#selectbg_g>October 4,2021</#></b>
 
-  <*> thermal-core: Fix invalid sensor data being accepted</*>
-  <*> msm-tsens: Reschedule work instead of causing uninterruptible sleep</*>
-  <*> thermal: qpnp-adc-tm: Fix aborting suspend</*>
-  <*> msm-tsens: remove HZ dependency</*>
-  <*> power: supply: qpnp-smb2: allow write access to some battery psy prop</*>
-  <*> power: smb-lib: Force suspend when cable out.</*>
-  <*> qpnp-fg-gen3: don't report soc until soc is ready</*>
-  <*> power: qpnp-fg-gen3: Calculate battery more linearly</*>
-
-<b><#selectbg_g>September 13,2021</#></b>
-
-  <*> msm: kgsl: Re-enable GPU Powerlevel Option</*>
-  <*> mm: ksm: Disable by default</*>
-  <*> mm: ksm: Disable by default</*>
-  <*> {X00TD,X01BD}_defconfig: Enable Kernel Samepage Merging Support</*>
-  <*> mm: Optimize Kernel Samepage Merging</*>
-
-<b><#selectbg_g>September 11,2021</#></b>
-
-  <*> power: Revert recent bcl reset patches</*>
-  <*> block: Reduce queue depth</*>
-  <*> tcp: Disable SYN cookies</*>
-  <*> tcp: Enable fast recycling by default</*>
-  <*> tcp: Reuse existing connections</*>
-  <*> tcp: Disable ping replies by default</*>
-  <*> tcp: Increase max connections to accept</*>
-  <*> tcp: Disable TCP timestamps</*>
-  <*> tcp: Disable slow start after idle by default</*>
-  <*> ARM: dts: sdm660: Enable CPU cooling by declaring cooling-cells</*>
-  <*> sound: codec: Revert Some Optimizations</*>
-  <*> tcp_westwood : Bump minimum RTT and lower initial RTT duration</*>
-  <*> crypto: Boost Performance with O3 Optimizations</*>
-  <*> mmc: disable SPI CRC</*>
-  <*> sched/fair: Skip frequency updates if CPU about to idle</*>
+  <*> (X00TD) Fixed Max CPU Freq Sometimes Dropped</*>
+  <*> sdm660-overlay: Add Fixed CPU Clocks</*>
