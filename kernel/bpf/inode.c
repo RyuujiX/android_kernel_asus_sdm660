@@ -31,10 +31,10 @@ static void *bpf_any_get(void *raw, enum bpf_type type)
 {
 	switch (type) {
 	case BPF_TYPE_PROG:
-		raw = bpf_prog_inc(raw);
+		atomic_inc(&((struct bpf_prog *)raw)->aux->refcnt);
 		break;
 	case BPF_TYPE_MAP:
-		raw = bpf_map_inc(raw, true);
+		atomic_inc(&((struct bpf_map *)raw)->refcnt);
 		break;
 	default:
 		WARN_ON_ONCE(1);
@@ -51,7 +51,7 @@ static void bpf_any_put(void *raw, enum bpf_type type)
 		bpf_prog_put(raw);
 		break;
 	case BPF_TYPE_MAP:
-		bpf_map_put_with_uref(raw);
+		bpf_map_put(raw);
 		break;
 	default:
 		WARN_ON_ONCE(1);
@@ -64,7 +64,7 @@ static void *bpf_fd_probe_obj(u32 ufd, enum bpf_type *type)
 	void *raw;
 
 	*type = BPF_TYPE_MAP;
-	raw = bpf_map_get_with_uref(ufd);
+	raw = bpf_map_get(ufd);
 	if (IS_ERR(raw)) {
 		*type = BPF_TYPE_PROG;
 		raw = bpf_prog_get(ufd);
@@ -277,8 +277,7 @@ static void *bpf_obj_do_get(const struct filename *pathname,
 		goto out;
 
 	raw = bpf_any_get(inode->i_private, *type);
-	if (!IS_ERR(raw))
-		touch_atime(&path);
+	touch_atime(&path);
 
 	path_put(&path);
 	return raw;
@@ -358,7 +357,7 @@ static int bpf_fill_super(struct super_block *sb, void *data, int silent)
 static struct dentry *bpf_mount(struct file_system_type *type, int flags,
 				const char *dev_name, void *data)
 {
-	return mount_nodev(type, flags, data, bpf_fill_super);
+	return mount_ns(type, flags, current->nsproxy->mnt_ns, bpf_fill_super);
 }
 
 static struct file_system_type bpf_fs_type = {
@@ -366,6 +365,7 @@ static struct file_system_type bpf_fs_type = {
 	.name		= "bpf",
 	.mount		= bpf_mount,
 	.kill_sb	= kill_litter_super,
+	.fs_flags	= FS_USERNS_MOUNT,
 };
 
 MODULE_ALIAS_FS("bpf");

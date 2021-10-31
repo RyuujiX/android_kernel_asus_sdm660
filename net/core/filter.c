@@ -430,10 +430,6 @@ do_pass:
 			    convert_bpf_extensions(fp, &insn))
 				break;
 
-			if (fp->code == (BPF_ALU | BPF_DIV | BPF_X) ||
-			    fp->code == (BPF_ALU | BPF_MOD | BPF_X))
-				*insn++ = BPF_MOV32_REG(BPF_REG_X, BPF_REG_X);
-
 			*insn = BPF_RAW_INSN(fp->code, BPF_REG_A, BPF_REG_X, 0, fp->k);
 			break;
 
@@ -789,11 +785,6 @@ static int bpf_check_classic(const struct sock_filter *filter,
 			if (ftest->k == 0)
 				return -EINVAL;
 			break;
-		case BPF_ALU | BPF_LSH | BPF_K:
-		case BPF_ALU | BPF_RSH | BPF_K:
-			if (ftest->k >= 32)
-				return -EINVAL;
-			break;
 		case BPF_LD | BPF_MEM:
 		case BPF_LDX | BPF_MEM:
 		case BPF_ST:
@@ -996,9 +987,7 @@ static struct bpf_prog *bpf_migrate_filter(struct bpf_prog *fp)
 		 */
 		goto out_err_free;
 
-	err = bpf_prog_select_runtime(fp);
-	if (err)
-		goto out_err_free;
+	bpf_prog_select_runtime(fp);
 
 	kfree(old_prog);
 	return fp;
