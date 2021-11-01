@@ -63,8 +63,14 @@ static void fifo_exit_queue(struct elevator_queue *e)
         kfree(fifo_d);
 }
 
-static int fifo_deny_merge(struct request_queue *req_q, struct request *req,
+static int fifo_deny_bio_merge(struct request_queue *req_q, struct request *req,
 			struct bio *bio)
+{
+	return ELEVATOR_NO_MERGE;
+}
+
+static int fifo_deny_rq_merge(struct request_queue *q, struct request *rq,
+			      struct request *next)
 {
 	return ELEVATOR_NO_MERGE;
 }
@@ -73,7 +79,8 @@ static struct elevator_type elevator_fifo = {
 	.ops = {
 		.elevator_dispatch_fn		= fifo_dispatch,
 		.elevator_add_req_fn		= fifo_add_request,
-		.elevator_allow_merge_fn 	= fifo_deny_merge,
+		.elevator_allow_bio_merge_fn 	= fifo_deny_bio_merge,
+		.elevator_allow_rq_merge_fn 	= fifo_deny_rq_merge,
 		.elevator_init_fn		= fifo_init_queue,
 		.elevator_exit_fn		= fifo_exit_queue,
 	},
