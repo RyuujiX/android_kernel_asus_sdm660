@@ -1,16 +1,19 @@
-<b><#selectbg_g>November 5,2021</#></b>
+<b><#selectbg_g>November 28,2021</#></b>
 
-  <*> Bringup SkyWalker-ヒイラギ-Hiiragi</*>
-  <*> Merged Linux 4.4.290~291</*>
-  <*> Cleaned Up Some Stuffs</*>
-  <*> Fixed Some Apps Crash Issue ( like Instagram )</*>
-  <*> Fixed Internet Speed Meter A12</*>
-  <*> (EAS) Switched to PELT 12ms HALFLIFE</*>
-  <*> sdm660: Undeclare Cooling Cells</*>
-  <*> Battery Temperature Show more precision</*>
-  <*> (OFI) WiFi: Merged LA.UM.7.2.c26-02900-sdm660.0</*>
-  <*> (NFI) WiFi: Merged LA.UM.9.2.r1-03600-SDMxx0.0</*>
-  <*> Removed GPU Powerlevel ( Deprecated )</*>
-  <*> Nuked 300MHz, (633MHz & 900MHz big) CPU Freqs ( Inefficient )</*>
-  <*> AK3: Upstreamed and Updated</*>
-  <*> More Changes (Me lazy to write it XD)</*>
+  <*> Bringup SkyWalker-ハルカ-Haruka</*>
+  <*> Merged Linux 4.4.293</*>
+  <*> [SQUASH] Revert some Previous Reverted Commits</*>
+
+<b><#selectbg_g>November 15,2021</#></b>
+
+  <*> subsystem_restart: Always performs soft resets when subsystems crash</*>
+  <*> Revert "soc: qcom: subsystem_restart: Prevent kernel panic caused by modem crash"</*>
+  <*> sound: Add Earpiece Gain</*>
+  <*> Fixed Sound Issues for some ROMs</*>
+  
+<b><#selectbg_g>November 14,2021</#></b>  
+
+  <*> power: hack fg_get_battery_temp to report reading from pa_therm0 as battery temperature</*>
+  <*> Revert "power: qpnp-fg-gen3: increase battery temp reading precision"</*>
+  <*> Merged Linux 4.4.292</*>
+  <*> adreno_idler: Enable by default and Tune it</*>
