@@ -1,0 +1,65 @@
+<b><#selectbg_g>December 20,2021</#></b>
+
+  <*> Bringup SkyWalker-チズル-Chizuru</*>
+  <*> Compiled with Snapdragon Clang 14 + GCC 4.9</*>
+
+<b><#selectbg_g>December 19,2021</#></b>
+
+  <*> (EAS) Added CPUSets and Schedtune Assist</*> 
+  <*> (EAS) Disable CAF Boost + Added Dynamic Stune Boost </*>
+  <*> (EAS) Re-Picked EAS Related Commits</*>
+  <*> {X00TD,X01BD}_defconfig: Re-Enable MSM Performance</*>
+  <*> msm_performance: checkout to msm-4.14</*>
+  <*> Revert "ARM64: dts: sdm660-gpu: Disable GPU wake up on touch event"</*>
+  <*> Revert "sdm660: Add Fixed CPU Clocks"</*>
+
+<b><#selectbg_g>December 15,2021</#></b>
+
+  <*> Revert "Makefile: Optimize for our CPU"</*>
+  <*> binder: please shut up</*>
+  <*> binder: Fix log spam caused by interrupted waits</*>
+  <*> android: binder: Rate-limit debug and userspace triggered err msgs</*>
+  <*> binder: Reserve caches for small, high-frequency memory allocations</*>
+  <*> wireguard: Merge Tag v1.0.20211208</*>
+
+<b><#selectbg_g>December 14,2021</#></b>
+
+  <*> Merged Linux 4.4.295</*>
+  <*> Revert "kbuild: Add support for LLVM's Polly optimizer"</*>
+
+<b><#selectbg_g>December 13,2021</#></b>
+
+  <*> {X00TD,X01BD}_defconfig: Switch to 100Hz Tick Rate</*>
+  <*> BACKPORT: android,lowmemorykiller: Don't abuse TIF_MEMDIE</*>
+  <*> lowmemorykiller: disable adaptive_lmk & debug_level by default</*>
+  <*> Makefile.lib: Lower kernel gzip compression to fastest</*>
+  <*> (EAS) {X00TD, X01BD}_defconfig: Switch to PELT 16ms + enabled WALT</*>
+  <*> ARM: dts: sdm660: Fallback to normal RCU after boot</*>
+
+<b><#selectbg_g>December 8,2021</#></b>
+
+  <*> Merged Linux 4.4.294</*>
+  <*> Some Upstream for Crypto and BPF</*>
+
+<b><#selectbg_g>December 4,2021</#></b>
+
+  <*> ipa_v3: Mitigate usleep_range calls</*>
+  <*> platform: ipa: use power efficient working queues</*>
+  <*> cpu-boost: Avoid boosting over user set max freq</*>
+  <*> cpu-boost: Optimize policy update loop on input boost</*>
+  <*> cpufreq: Don't WARN_ON on non-existent cpu</*>
+  <*> qcom-cpufreq: Limit the rate of CPU clock-rate changes</*>
+  <*> sched/fair: Reduce sched migration cost to 2ms</*>
+  <*> kernel: Fix cpufreq times memory leaks</*>
+  <*> sched: Do not give sleepers 50% more runtime</*>
+  <*> sched/clock: Remove watchdog touching</*>
+  <*> sched/idle: Micro-optimize the idle loop</*>
+  <*> rcu: Speed up calling of RCU tasks callbacks</*>
+  <*> cpuset, mm: fix TIF_MEMDIE check in cpuset_change_task_nodemask</*>
+  <*> kernel: Boost whenever a zygote-forked process becomes a top app</*>
+  <*> (EAS) ARM: dts: sdm660: Use Back Stock SDM660 Energy Model</*>
+
+<b><#selectbg_g>December 3,2021</#></b>
+
+  <*> ARM: sdm660: Decrease core-limit-temp Value</*>
+  <*> msm_thermal: Add + Merge Intelli Thermal v3.0</*>
