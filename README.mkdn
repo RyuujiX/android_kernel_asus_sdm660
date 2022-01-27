@@ -8,10 +8,11 @@ There is has 2 Variant , HMP and EAS .
 
 Just Copy, Paste, Then Execute the command :)
 
-Make sure `androidboot.version` has defined on Boot Cmdline due of
-this commit: 
+Make sure `androidboot.version` has defined on Boot Cmdline with
+ur Android Version due of this commit: 
+```bash
 https://github.com/RyuujiX/android_kernel_asus_sdm660/commit/b6f50a7917e4336495f6b2642064f90d9babed7d
-
+```
 
 OverClocked Kernel
 ------------------
@@ -23,16 +24,12 @@ On Branch r6/hmp & r6/eas:
    git commit -m "Use Back Stock Freq"
 ```
 
-For LED Based Vibration / Haptic ROMs
-----------------------------
-This Kernel is using NLV ( No LED Vibration ) now , So If u want to Enable
-LED Vibration , do this :
+About NLV & LV
+--------------
+It was LV by default and Enabled only for A11+. If u want to disable it,
+Define "0" at `led.vibration` on boot cmdline.
 
-On Branch r6/hmp and r6/eas:
-```bash
-   git revert c6979baa65fd7e940ea1cefbf17d67bfbe727ce1 -n && \
-   git commit -m "Enable LED Vibration"
-```
+For Android 10 and 9 will set `led.vibration` to "0" / NLV as default
 
 Using Pie / CAF 7.2 WiFi Drivers
 --------------------------------

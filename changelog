@@ -1,43 +1,16 @@
-<b><#selectbg_g>January 12,2022</#></b>
+<b><#selectbg_g>January 27,2022</#></b>
 
-  <*> Bringup SkyWalker-カグラ-Kagura</*>
-  <*> Privileged Access Never (PAN) emulation disabled</*>
-  <*> Fixed A12 Upload Speed Meter</*>
+  <*> Bringup SkyWalker-カオリ-Kaori</*>
+  <*> drivers + ARM/dts: Add Cmdline Toggle Support for LV and NLV</*>
+  <*> Merged Linux 4.4.300</*>
 
-<b><#selectbg_g>January 11,2022</#></b>
+<b><#selectbg_g>January 16,2022</#></b>
 
-  <*> Merged Linux 4.4.299</*>
-  <*> Revert "ktime: Get rid of the union"</*>
-  <*> Revert "qcom-cpufreq: Limit the rate of CPU clock-rate changes"</*>
-  <*> Revert "EXT4 optimizations"</*>
+  <*> drivers: nvt_ts: Reduce ZenMotions WakeLock Timeout to 700ms</*>
+  <*> [1/2] drivers: touchscreen: Fix Screen Off Gestures</*>
+  <*> X00TD: drivers: input: touchscreen: replace kstrtol() with kstrtol_from_user()</*>
 
-<b><#selectbg_g>January 10,2022</#></b>
+<b><#selectbg_g>January 15,2022</#></b>
 
-  <*> Spectrum Updated</*>
-  <*> AK3: Add RAM/LMK Patcher</*>
-  <*> AK3: Update DT2W Script</*>
-  <*> AK3: Synced with osm0sis's source</*>
-
-<b><#selectbg_g>January 9,2022</#></b>
-
-  <*> (EAS) CAF Boost Re-Enabled</*>
-  <*> MSM Performance Disabled</*>
-
-<b><#selectbg_g>January 6,2022</#></b>
-
-  <*> Merged Linux 4.4.298</*>
-
-<b><#selectbg_g>January 5,2022</#></b>
-
-  <*> binder: Import from android11-5.4-lts</*>
-  <*> Merged CAF LA.UM.8.2.r2-05400-sdm660.0</*>
-
-<b><#selectbg_g>January 4,2022</#></b>
-
-  <*> sched/fair: Fix low cpu usage with high throttling by removing expiration of cpu-local slices</*>
-  <*> sched/fair: Fix bandwidth timer clock drift condition</*>
-  <*> ARM: dts/qcom: Disable CoreSight DT entries for sdm660</*>
-  <*> ARM: sdm660: Do not allocate memory for cont_splash_mem</*>
-  <*> ARM: dts: sdm660: increase linux,cma from 32M to 128M</*>
-  <*> {X00TD,X01BD}_defconfig: Switch back to 300Hz Tick Rate</*>
-  <*> Merged Linux 4.4.296~297</*> 
+  <*> binderfs: Fixed Compatibility & Enabled for A11+</*>
+  <*> binder: Upstreamed</*>
