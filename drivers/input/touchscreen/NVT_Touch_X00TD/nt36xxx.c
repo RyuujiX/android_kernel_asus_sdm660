@@ -453,7 +453,7 @@ static ssize_t nvt_gesture_mode_get_proc(struct file *file,
 static ssize_t nvt_gesture_mode_set_proc(struct file *filp,
                         const char __user *buffer, size_t count, loff_t *off)
 {
-	char msg[20];
+	char msg[20] = {0};
 	int ret = 0;
 
 	ret = copy_from_user(msg, buffer, count);
