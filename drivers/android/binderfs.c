@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 
-#include <linux/compiler_types.h>
+#include <linux/compiler.h>
 #include <linux/errno.h>
 #include <linux/fs.h>
 #include <linux/fsnotify.h>
@@ -29,7 +29,6 @@
 #include <linux/types.h>
 #include <linux/uaccess.h>
 #include <linux/user_namespace.h>
-#include <linux/xarray.h>
 #include <uapi/asm-generic/errno-base.h>
 #include <uapi/linux/android/binder.h>
 #include <uapi/linux/android/binderfs.h>
@@ -117,9 +116,9 @@ static int binderfs_binder_device_create(struct inode *ref_inode,
 	/* Reserve new minor number for the new device. */
 	mutex_lock(&binderfs_minors_mutex);
 	if (++info->device_count <= info->mount_opts.max)
-		minor = ida_alloc_max(&binderfs_minors,
-				      use_reserve ? BINDERFS_MAX_MINOR :
-						    BINDERFS_MAX_MINOR_CAPPED,
+		minor = ida_simple_get(&binderfs_minors, 0,
+				      use_reserve ? BINDERFS_MAX_MINOR + 1:
+						    BINDERFS_MAX_MINOR_CAPPED + 1,
 				      GFP_KERNEL);
 	else
 		minor = -ENOSPC;
@@ -140,7 +139,7 @@ static int binderfs_binder_device_create(struct inode *ref_inode,
 		goto err;
 
 	inode->i_ino = minor + INODE_OFFSET;
-	inode->i_mtime = inode->i_atime = inode->i_ctime = current_time(inode);
+	inode->i_mtime = inode->i_atime = inode->i_ctime = CURRENT_TIME;
 	init_special_inode(inode, S_IFCHR | 0600,
 			   MKDEV(MAJOR(binderfs_dev), minor));
 	inode->i_fop = &binder_fops;
@@ -201,7 +200,7 @@ err:
 	kfree(device);
 	mutex_lock(&binderfs_minors_mutex);
 	--info->device_count;
-	ida_free(&binderfs_minors, minor);
+	ida_remove(&binderfs_minors, minor);
 	mutex_unlock(&binderfs_minors_mutex);
 	iput(inode);
 
@@ -255,7 +254,7 @@ static void binderfs_evict_inode(struct inode *inode)
 
 	mutex_lock(&binderfs_minors_mutex);
 	--info->device_count;
-	ida_free(&binderfs_minors, device->miscdev.minor);
+	ida_remove(&binderfs_minors, device->miscdev.minor);
 	mutex_unlock(&binderfs_minors_mutex);
 
 	if (refcount_dec_and_test(&device->ref)) {
@@ -371,7 +370,7 @@ static int binderfs_rename(struct inode *old_dir, struct dentry *old_dentry,
 	    is_binderfs_control_device(new_dentry))
 		return -EPERM;
 
-	return simple_rename(old_dir, old_dentry, new_dir, new_dentry, flags);
+	return simple_rename2(old_dir, old_dentry, new_dir, new_dentry, flags);
 }
 
 static int binderfs_unlink(struct inode *dir, struct dentry *dentry)
@@ -430,9 +429,9 @@ static int binderfs_binder_ctl_create(struct super_block *sb)
 
 	/* Reserve a new minor number for the new device. */
 	mutex_lock(&binderfs_minors_mutex);
-	minor = ida_alloc_max(&binderfs_minors,
-			      use_reserve ? BINDERFS_MAX_MINOR :
-					    BINDERFS_MAX_MINOR_CAPPED,
+	minor = ida_simple_get(&binderfs_minors, 0,
+			      use_reserve ? BINDERFS_MAX_MINOR  + 1:
+					    BINDERFS_MAX_MINOR_CAPPED + 1,
 			      GFP_KERNEL);
 	mutex_unlock(&binderfs_minors_mutex);
 	if (minor < 0) {
@@ -441,7 +440,7 @@ static int binderfs_binder_ctl_create(struct super_block *sb)
 	}
 
 	inode->i_ino = SECOND_INODE;
-	inode->i_mtime = inode->i_atime = inode->i_ctime = current_time(inode);
+	inode->i_mtime = inode->i_atime = inode->i_ctime = CURRENT_TIME;
 	init_special_inode(inode, S_IFCHR | 0600,
 			   MKDEV(MAJOR(binderfs_dev), minor));
 	inode->i_fop = &binder_ctl_fops;
@@ -483,7 +482,7 @@ static struct inode *binderfs_make_inode(struct super_block *sb, int mode)
 	if (ret) {
 		ret->i_ino = iunique(sb, BINDERFS_MAX_MINOR + INODE_OFFSET);
 		ret->i_mode = mode;
-		ret->i_atime = ret->i_mtime = ret->i_ctime = current_time(ret);
+		ret->i_atime = ret->i_mtime = ret->i_ctime = CURRENT_TIME;
 	}
 	return ret;
 }
@@ -658,7 +657,7 @@ static int binderfs_fill_super(struct super_block *sb, void *data, int silent)
 	int ret;
 	struct binderfs_info *info;
 	struct inode *inode = NULL;
-	struct binderfs_device device_info = { 0 };
+	struct binderfs_device device_info = { { 0 } };
 	const char *name;
 	size_t len;
 
@@ -693,10 +692,10 @@ static int binderfs_fill_super(struct super_block *sb, void *data, int silent)
 	if (ret)
 		return ret;
 
-	info->root_gid = make_kgid(sb->s_user_ns, 0);
+	info->root_gid = make_kgid(&init_user_ns, 0);
 	if (!gid_valid(info->root_gid))
 		info->root_gid = GLOBAL_ROOT_GID;
-	info->root_uid = make_kuid(sb->s_user_ns, 0);
+	info->root_uid = make_kuid(&init_user_ns, 0);
 	if (!uid_valid(info->root_uid))
 		info->root_uid = GLOBAL_ROOT_UID;
 
@@ -707,7 +706,7 @@ static int binderfs_fill_super(struct super_block *sb, void *data, int silent)
 	inode->i_ino = FIRST_INODE;
 	inode->i_fop = &simple_dir_operations;
 	inode->i_mode = S_IFDIR | 0755;
-	inode->i_mtime = inode->i_atime = inode->i_ctime = current_time(inode);
+	inode->i_mtime = inode->i_atime = inode->i_ctime = CURRENT_TIME;
 	inode->i_op = &binderfs_dir_inode_operations;
 	set_nlink(inode, 2);
 
@@ -764,31 +763,35 @@ static struct file_system_type binder_fs_type = {
 
 int __init init_binderfs(void)
 {
-	int ret;
-	const char *name;
-	size_t len;
+	if (get_android_version() < 11)
+		return 0;
+	else {
+		int ret;
+		const char *name;
+		size_t len;
 
-	/* Verify that the default binderfs device names are valid. */
-	name = binder_devices_param;
-	for (len = strcspn(name, ","); len > 0; len = strcspn(name, ",")) {
-		if (len > BINDERFS_MAX_NAME)
-			return -E2BIG;
-		name += len;
-		if (*name == ',')
-			name++;
-	}
+		/* Verify that the default binderfs device names are valid. */
+		name = binder_devices_param;
+		for (len = strcspn(name, ","); len > 0; len = strcspn(name, ",")) {
+			if (len > BINDERFS_MAX_NAME)
+				return -E2BIG;
+			name += len;
+			if (*name == ',')
+				name++;
+		}
 
-	/* Allocate new major number for binderfs. */
-	ret = alloc_chrdev_region(&binderfs_dev, 0, BINDERFS_MAX_MINOR,
-				  "binder");
-	if (ret)
+		/* Allocate new major number for binderfs. */
+		ret = alloc_chrdev_region(&binderfs_dev, 0, BINDERFS_MAX_MINOR,
+					  "binder");
+		if (ret)
+			return ret;
+
+		ret = register_filesystem(&binder_fs_type);
+		if (ret) {
+			unregister_chrdev_region(binderfs_dev, BINDERFS_MAX_MINOR);
+			return ret;
+		}
+
 		return ret;
-
-	ret = register_filesystem(&binder_fs_type);
-	if (ret) {
-		unregister_chrdev_region(binderfs_dev, BINDERFS_MAX_MINOR);
-		return ret;
 	}
-
-	return ret;
 }
