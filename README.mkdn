@@ -9,10 +9,8 @@ There is has 2 Variant , HMP and EAS .
 Just Copy, Paste, Then Execute the command :)
 
 Make sure `androidboot.version` has defined on Boot Cmdline with
-ur Android Version due of this commit: 
-```bash
+ur Android Version due of this commit:
 https://github.com/RyuujiX/android_kernel_asus_sdm660/commit/b6f50a7917e4336495f6b2642064f90d9babed7d
-```
 
 OverClocked Kernel
 ------------------
@@ -67,7 +65,7 @@ Usually, X00TD and X01BD Device Trees is using HMP Perf HAL as default.
 
 So, if u want to build ROM with Prebuilt EAS Kernel, Pick this EAS Perf HAL:
 
-https://github.com/RyuujiX/AnyKernel3/tree/injectorx-eas/tools/SDM660PerfHAL
+https://github.com/RyuujiX/AnyKernel3/tree/4.4-eas/tools/SDM660PerfHAL
 
 Spectrum Support
 ----------------

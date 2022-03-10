@@ -1,16 +1,9 @@
-<b><#selectbg_g>January 27,2022</#></b>
+<b><#selectbg_g>March 3,2022</#></b>
 
-  <*> Bringup SkyWalker-カオリ-Kaori</*>
-  <*> drivers + ARM/dts: Add Cmdline Toggle Support for LV and NLV</*>
-  <*> Merged Linux 4.4.300</*>
+  <*> Bringup SkyWalker-ラーメン-Ramen</*>
+  <*> drivers: power: Make Fast Charging Hax Adjustable</*>
+  <*> Fixed Data Usage on Android 12</*>
 
-<b><#selectbg_g>January 16,2022</#></b>
+<b><#selectbg_g>February 27,2022</#></b>
 
-  <*> drivers: nvt_ts: Reduce ZenMotions WakeLock Timeout to 700ms</*>
-  <*> [1/2] drivers: touchscreen: Fix Screen Off Gestures</*>
-  <*> X00TD: drivers: input: touchscreen: replace kstrtol() with kstrtol_from_user()</*>
-
-<b><#selectbg_g>January 15,2022</#></b>
-
-  <*> binderfs: Fixed Compatibility & Enabled for A11+</*>
-  <*> binder: Upstreamed</*>
+  <*> Merge Linux 4.4.301~302</*>
