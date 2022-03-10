@@ -1,4 +1,4 @@
-CONFIG_LOCALVERSION="-SkyWalker-カオリ-Kaori-EAS"
+CONFIG_LOCALVERSION="-SkyWalker-ラーメン-Ramen-EAS"
 # CONFIG_LOCALVERSION_AUTO is not set
 # CONFIG_USELIB is not set
 CONFIG_NO_HZ=y
