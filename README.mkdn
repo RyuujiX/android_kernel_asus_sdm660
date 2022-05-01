@@ -1,0 +1,75 @@
+SkyWalker 4.4.x Kernel Source
+====================================
+
+Getting Started
+---------------
+You can use this source if u Want , 
+There is has 2 Variant , HMP and EAS .
+
+Just Copy, Paste, Then Execute the command :)
+
+Make sure `androidboot.version` has defined on Boot Cmdline with
+ur Android Version due of this commit:
+https://github.com/RyuujiX/android_kernel_asus_sdm660/commit/b6f50a7917e4336495f6b2642064f90d9babed7d
+
+OverClocked Kernel
+------------------
+This Kernel is Overclocked. If u want go Back to Stock Freq, Do this:
+
+On Branch r7/hmp & r7/eas:
+```bash
+   git revert b4c53eccaf2789943433865c194292d63b66a401 -n && \
+   git commit -m "Use Back Stock Freq"
+```
+
+About NLV & LV
+--------------
+It was LV by default and Enabled only for A11+. If u want to disable it,
+Define "0" at `led.vibration` on boot cmdline.
+
+For Android 10 and 9 will set `led.vibration` to "0" / NLV as default
+
+Using R / CAF 9.2 WiFi Drivers
+--------------------------------
+Now, This Kernel is using Pie / CAF 7.2 WiFi drivers , So if u want to use
+R WiFi Driver , Just merge this into kernel source:
+
+https://github.com/RyuujiX/NFI_SkyWalker
+
+Still Recommended to use Pie WiFi Drivers coz it's more optimal :)
+
+Compile for Android Pie
+-----------------------
+
+For X00TD, Just Use Pie WiFi Driver.
+
+For X01BD, do this also after Using Pie WiFi Driver:
+
+On Branch r7/hmp and r7/eas:
+```bash
+   git revert be578e2def2d7a67d6643335d016008f7bee8da8 -n && \
+   git revert 5c27bb6d8547112a8b815742c5dbcaae520b4497 -n && \
+   git commit -m "Fix WiFi for Android 9"
+```
+
+EAS Perf HAL
+------------
+Usually, X00TD and X01BD Device Trees is using HMP Perf HAL as default.
+
+So, if u want to build ROM with Prebuilt EAS Kernel, Pick this EAS Perf HAL:
+
+https://github.com/RyuujiX/AnyKernel3/tree/4.4-eas/tools/SDM660PerfHAL
+
+Spectrum Support
+----------------
+Pick Spectrum Script from Here: https://github.com/RyuujiX/spectrum , then rename it to init.spectrum.rc
+
+HMP : ryuu
+
+EAS : eas
+
+Or , make it by ur self .
+
+My CI Builder Script
+--------------------
+Check it out: https://github.com/RyuujiX/builder-xobod-r
