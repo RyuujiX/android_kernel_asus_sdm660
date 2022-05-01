@@ -1,0 +1,22 @@
+<b><#selectbg_g>May 2,2022</#></b>
+
+  <*> Bringup SkyWalker-アラタ-Arata</*>
+  <*> Rebased Over asus-sdm660-devs/lineage-19.1 branch</*>
+  <*> Reverted some Changes</*>
+  <*> Merged CLOSS LA.UM.8.2.r2-05800-sdm660.0</*>
+  <*> [2] Re-Fix Screen Off Gestures for Latest Android Version</*>
+  <*> (NFI) Merged CLOSS LA.UM.9.2.r1-03700-SDMxx0.0 into WiFi driver</*>
+  <*> (NFI) Fixed Wifi & Hotspot not working on Pie FW</*>
+  <*> (OFI) Fixed WFD issue</*>
+  <*> Added dbitclk and dfps support</*>
+  <*> AK3: Upstreamed</*>
+  <*> More Improvements, Check on Github Commits</*>
+
+
+
+<b><#000000>NOTES :</#></b>
+
+  <*> NFI still Better with Q FW.</*>
+  <*> If There is an internal problem with your device warning show , just click ok and ignore.</*>
+  <*> Kernel need sometimes to settle.</*>
+  <*> For better results , Tweak with Kernel Manager or use Spectrum.</*>
