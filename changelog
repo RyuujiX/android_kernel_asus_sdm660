@@ -1,20 +1,19 @@
-<b><#selectbg_g>May 2,2022</#></b>
+<b><#selectbg_g>CHANGELOGS :</#></b>
 
-  <*> Bringup SkyWalker-アラタ-Arata</*>
-  <*> Rebased Over asus-sdm660-devs/lineage-19.1 branch</*>
-  <*> Reverted some Changes</*>
-  <*> Merged CLOSS LA.UM.8.2.r2-05800-sdm660.0</*>
-  <*> [2] Re-Fix Screen Off Gestures for Latest Android Version</*>
-  <*> (NFI) Merged CLOSS LA.UM.9.2.r1-03700-SDMxx0.0 into WiFi driver</*>
-  <*> (NFI) Fixed Wifi & Hotspot not working on Pie FW</*>
-  <*> (OFI) Fixed WFD issue</*>
-  <*> Added dbitclk and dfps support</*>
-  <*> AK3: Upstreamed</*>
-  <*> More Improvements, Check on Github Commits</*>
-
+  <*> Bringup SkyWalker-ミサキ-Misaki</*>
+  <*> TCP: Patch and Backport BBR</*>
+  <*> Reverted some Camera Changes</*>
+  <*> ARM: Added HDR Support</*>
+  <*> ARM: Increased fcc-max-ua to 2300</*>
+  <*> ESD Check disabled for Tianma and Himax Panel</*>
+  <*> usb: Added DriveDroid Support</*>
+  <*> drivers: power: add timeouts to wakelocks</*>
+  <*> Revert "drivers: power: Make Fast Charging Hax Adjustable"</*>
+  <*> More Changes, see on GitHub Commits</*>
 
 
-<b><#000000>NOTES :</#></b>
+
+<b><#selectbg_g>NOTES :</#></b>
 
   <*> NFI still Better with Q FW.</*>
   <*> If There is an internal problem with your device warning show , just click ok and ignore.</*>
