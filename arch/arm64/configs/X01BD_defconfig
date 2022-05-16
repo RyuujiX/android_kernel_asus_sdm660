@@ -1,4 +1,4 @@
-CONFIG_LOCALVERSION="-SkyWalker-ミサキ-Misaki-HMP"
+CONFIG_LOCALVERSION="-SkyWalker-ミサキ-Misaki-X-HMP"
 # CONFIG_LOCALVERSION_AUTO is not set
 # CONFIG_USELIB is not set
 CONFIG_NO_HZ=y
