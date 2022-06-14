@@ -12,6 +12,8 @@ Make sure `androidboot.version` has defined on Boot Cmdline with
 ur Android Version due of this commit:
 https://github.com/RyuujiX/android_kernel_asus_sdm660/commit/b6f50a7917e4336495f6b2642064f90d9babed7d
 
+`androidboot.version` default value is `12`
+
 OverClocked Kernel
 ------------------
 This Kernel is Overclocked. If u want go Back to Stock Freq, Do this:
