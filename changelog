@@ -1,3 +1,11 @@
+<b><#selectbg_g>June 14,2022</#></b>
+
+  <*> Bringup SkyWalker-ミサキ-Misaki-Y</*>
+  <*> Updated Snapdragon Clang to 14.1.2</*>
+  <*> drivers: Properly enable asus_lcd_early_unblank_func for X00TD</*>
+  <*> X00TD: cdfinger_fp: Update Driver from X01BD (Fix some issue)</*>
+  <*> X00TD: NVT_Touch: Update M & O Screen-Off Gestures Keycode and Debloat Driver</*>
+
 <b><#selectbg_g>May 16,2022</#></b>
 
   <*> Bringup SkyWalker-ミサキ-Misaki-X</*>
@@ -20,6 +28,7 @@
 
 <b><#selectbg_g>NOTES :</#></b>
 
+  <*> This Update should be for X00TD only but due Compiler Update, so Updated for X01BD too.</*>
   <*> NFI still Better with Q FW.</*>
   <*> If There is an internal problem with your device warning show , just click ok and ignore.</*>
   <*> Kernel need sometimes to settle.</*>
