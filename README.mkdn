@@ -18,9 +18,15 @@ OverClocked Kernel
 ------------------
 This Kernel is Overclocked. If u want go Back to Stock Freq, Do this:
 
-On Branch r7/hmp & r7/eas:
+On Branch r7/hmp:
 ```bash
-   git revert b4c53eccaf2789943433865c194292d63b66a401 -n && \
+   git revert e2194a0d2d4aa4abbb0e7215ca5fe1cc889d5f78 -n && \
+   git commit -m "Use Back Stock Freq"
+```
+
+On Branch r7/eas:
+```bash
+   git revert 636637918b2bf09de2d7e54d08f3c23c8932e6ef -n && \
    git commit -m "Use Back Stock Freq"
 ```
 
