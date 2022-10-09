@@ -1,34 +1,25 @@
-<b><#selectbg_g>June 14,2022</#></b>
+<b><#selectbg_g>Oct 9,2022</#></b>
 
-  <*> Bringup SkyWalker-ミサキ-Misaki-Y</*>
-  <*> Updated Snapdragon Clang to 14.1.2</*>
-  <*> drivers: Properly enable asus_lcd_early_unblank_func for X00TD</*>
-  <*> X00TD: cdfinger_fp: Update Driver from X01BD (Fix some issue)</*>
-  <*> X00TD: NVT_Touch: Update M & O Screen-Off Gestures Keycode and Debloat Driver</*>
-
-<b><#selectbg_g>May 16,2022</#></b>
-
-  <*> Bringup SkyWalker-ミサキ-Misaki-X</*>
-  <*> Fixed Camera Issues for Some ROMs and Devices</*>
-
-<b><#selectbg_g>May 14,2022</#></b>
-
-  <*> Bringup SkyWalker-ミサキ-Misaki</*>
-  <*> TCP: Patch and Backport BBR</*>
-  <*> Reverted some Camera Changes</*>
-  <*> ARM: Added HDR Support</*>
-  <*> ARM: Increased fcc-max-ua to 2300</*>
-  <*> ESD Check disabled for Tianma and Himax Panel</*>
-  <*> usb: Added DriveDroid Support</*>
-  <*> drivers: power: add timeouts to wakelocks</*>
-  <*> Revert "drivers: power: Make Fast Charging Hax Adjustable"</*>
+  <*> Bringup SkyWalker-ハナビ-Hanabi</*>
+  <*> Updated Snapdragon Clang to 14.1.5</*>
+  <*> Merged CLO tag LA.UM.8.2.r2-06200-sdm660.0 </*>
+  <*> AK3: Added Android 13 Support</*>
+  <*> block: replace io_schedule with io_schedule_timeout</*>
+  <*> [OC] ReOverclock CPU & GPU</*>
+  <*> [EAS] Recalculated Energy Model from Freqbench</*>
+  <*> ARM: sdm660: Don't Run rcu_nocbs on Big Cluster</*>
+  <*> ZRAM Writeback disabled</*>
+  <*> Privileged Access Never (PAN) emulation disabled</*>
+  <*> fs: Gain 30% Linux Disk performance</*>
+  <*> Added and Enabled PowerSuspend support</*>
+  <*> arm: dts: X00TD: Cleanup X00TD dtsi (Fix NFC)</*>
+  <*> mmc: Make SPI CRC Toggleable</*>
   <*> More Changes, see on GitHub Commits</*>
 
 
 
 <b><#selectbg_g>NOTES :</#></b>
 
-  <*> This Update should be for X00TD only but due Compiler Update, so Updated for X01BD too.</*>
   <*> NFI still Better with Q FW.</*>
   <*> If There is an internal problem with your device warning show , just click ok and ignore.</*>
   <*> Kernel need sometimes to settle.</*>
