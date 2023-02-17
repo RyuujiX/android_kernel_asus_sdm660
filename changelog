@@ -1,19 +1,10 @@
-<b><#selectbg_g>Oct 9,2022</#></b>
+<b><#selectbg_g>Feb 17,2023</#></b>
 
-  <*> Bringup SkyWalker-ハナビ-Hanabi</*>
-  <*> Updated Snapdragon Clang to 14.1.5</*>
-  <*> Merged CLO tag LA.UM.8.2.r2-06200-sdm660.0 </*>
-  <*> AK3: Added Android 13 Support</*>
-  <*> block: replace io_schedule with io_schedule_timeout</*>
-  <*> [OC] ReOverclock CPU & GPU</*>
-  <*> [EAS] Recalculated Energy Model from Freqbench</*>
-  <*> ARM: sdm660: Don't Run rcu_nocbs on Big Cluster</*>
-  <*> ZRAM Writeback disabled</*>
-  <*> Privileged Access Never (PAN) emulation disabled</*>
-  <*> fs: Gain 30% Linux Disk performance</*>
-  <*> Added and Enabled PowerSuspend support</*>
-  <*> arm: dts: X00TD: Cleanup X00TD dtsi (Fix NFC)</*>
-  <*> mmc: Make SPI CRC Toggleable</*>
+  <*> Bringup SkyWalker-レイナ-Reina</*>
+  <*> Patched Little bit for Crypto</*>
+  <*> Fix Bootloop on some A13 ROMs</*>
+  <*> Reverted "Boost when open app" because too high drain and overheat</*>
+  <*> OFI: qcacld-3.0: Re-Enable SAE by default</*>
   <*> More Changes, see on GitHub Commits</*>
 
 
