@@ -1,0 +1,201 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+&spmi_bus {
+	qcom,pm660@0 {
+		qcom,power-on@800 {
+			qcom,pon_1 {
+				qcom,support-reset = <1>;
+				qcom,s1-timer = <10256>;
+				qcom,s2-timer = <10>;
+				qcom,s2-type = <4>;
+			};
+		
+			/delete-node/ qcom,pon_2;
+		};
+	};
+	
+	qcom,pm660@1 {
+		qcom,haptic@c000 {
+			qcom,timeout-ms = <120000>;
+			qcom,vmax-mv = <2784>;
+			qcom,wave-shape = "sine";
+			qcom,wave-play-rate-us = <4255>;
+			qcom,brake-pattern = [02 02 02 02];
+			qcom,lra-auto-res-mode = "none";
+			qcom,time-required-to-generate-back-emf-us = <5000>;
+			
+			/delete-property/ qcom,correct-lra-drive-freq;
+		};
+			
+};
+
+&pm660_gpios {
+	gpio@c100 {
+		status = "okay";
+		qcom,mode = <3>; /* Analog Pass Through */
+		qcom,pull = <5>; /* Input No pull */
+		qcom,vin-sel = <0>; /* VIN0 */
+		qcom,src-sel = <0>; /* Constant */
+		qcom,master-en = <0>; /* Eanble GPIO */
+	};
+	
+	gpio@c200 {
+		status = "okay";
+		qcom,mode = <3>; /* Analog Pass Through */
+		qcom,pull = <5>; /* Input No pull */
+		qcom,vin-sel = <0>; /* VIN0 */
+		qcom,src-sel = <0>; /* Constant */
+		qcom,master-en = <0>; /* Eanble GPIO */
+	};
+};
+
+&pm660_coincell {
+	qcom,charge-enable=<0>; //ASUS_BSP LiJen Ara HW not support
+};
+
+&pm660_vadc {
+	chan@50 {
+		label = "asus_pa_therm1";
+		reg = <0x50>;
+		qcom,decimation = <2>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "ratiometric";
+		qcom,scale-function = <2>;
+		qcom,hw-settle-time = <2>;
+		qcom,fast-avg-setup = <0>;
+	};
+	
+	chan@52 {
+		label = "asus_skin_therm";
+		reg = <0x51>;
+		qcom,decimation = <2>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "ratiometric";
+		qcom,scale-function = <2>;
+		qcom,hw-settle-time = <2>;
+		qcom,fast-avg-setup = <0>;
+	};
+	
+	chan@4b {
+		label = "asus_top_center_therm";
+		reg = <0x4d>;
+		qcom,decimation = <2>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "ratiometric";
+		qcom,scale-function = <2>;
+		qcom,hw-settle-time = <2>;
+		qcom,fast-avg-setup = <0>;
+	};
+	
+	chan@53 {
+		label = "asus_bot_center_therm";
+		reg = <0x4e>;
+		qcom,decimation = <2>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "ratiometric";
+		qcom,scale-function = <2>;
+		qcom,hw-settle-time = <2>;
+		qcom,fast-avg-setup = <0>;
+	};
+	
+	chan@4a {
+		label = "asus_pa_therm";
+		reg = <0x4f>;
+		qcom,decimation = <2>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "ratiometric";
+		qcom,scale-function = <2>;
+		qcom,hw-settle-time = <2>;
+		qcom,fast-avg-setup = <0>;
+	};
+	
+	han@1e {
+		label = "asus_die_temp";
+		reg = <0x1d>;
+		qcom,decimation = <2>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "absolute";
+		qcom,scale-function = <3>;
+		qcom,hw-settle-time = <0>;
+		qcom,fast-avg-setup = <0>;
+		qcom,cal-val = <0>;
+	};
+
+	chan@32 {
+		label = "gpio2_adc_tds";
+		reg = <0x32>;
+		qcom,decimation = <2>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "absolute";
+		qcom,scale-function = <0>;
+		qcom,hw-settle-time = <2>;
+		qcom,fast-avg-setup = <0>;
+	};
+
+	chan@72 {
+		label = "gpio2_adc_wp";
+		reg = <0x72>;
+		qcom,decimation = <2>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "absolute";
+		qcom,scale-function = <0>;
+		qcom,hw-settle-time = <2>;
+		qcom,fast-avg-setup = <0>;
+	};
+	
+	chan@13 {
+		label = "gpio3_adc";
+		reg = <0x13>;
+		qcom,decimation = <2>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "absolute";
+		qcom,scale-function = <0>;
+		qcom,hw-settle-time = <2>;
+		qcom,fast-avg-setup = <0>;
+	};
+};
+
+&pm660_charger {
+	qcom,thermal-mitigation
+			= <3000000 2500000 2000000 2000000
+				2000000 2000000>;
+	qcom,fcc-max-ua = <3000000>;
+	qcom,fv-max-uv = <4380000>;
+	qcom,usb-icl-ua = <1000000>;
+	qcom,float-option = <1>;
+	qcom,pm-gpio3-vadc = <&pm660_vadc>;  //charger id vadc reading
+};
+
+&pm660_pdphy {
+	qcom,default-sink-caps = <5000 3000>, /* 5V @ 3A */
+							 <7500 2000>, /* 7.5V @ 2A */
+							 <9000 1670>; /* 9V @ 1.67A */
+};
+
+&pm660_adc_tm {
+	chan@72 {
+		label = "gpio2_adc_tm";
+		reg = <0x72>;
+		qcom,pre-div-channel-scaling = <0>;
+		qcom,calibration-type = "absolute";
+		qcom,scale-function = <0>;
+		qcom,hw-settle-time = <2>;
+		qcom,btm-channel-number = <0x80>;
+	};
+};
+
+&pm660_fg {
+	qcom,fg-rsense-sel = <0>;
+	qcom,fg-recharge-voltage = <4150>;  //WeiYu ++ for HW recharge
+	qcom,fg-chg-term-current = <100>;
+	qcom,fg-sys-term-current = <(-150)>;
+	qcom,hold-soc-while-full;
+	qcom,linearize-soc; //ASUS_BSP
+	qcom,fg-force-load-profile;
+	qcom,fg-jeita-thresholds = <0 10 50 60>;
+	qcom,fg-jeita-hyst-temp = <3>;
+	qcom,pm-gpio2-vadc = <&pm660_vadc>; //ASUS_BSP LiJen config PMIC GPIO2 to ADC channel
+	qcom,pm-gpio2-adc_tm = <&pm660_adc_tm>; //ASUS_BSP LiJen config PMIC GPIO2 VADC_BTM channel
+	
+	/delete-property/ qcom,vadc_therm-vadc;
+};

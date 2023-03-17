@@ -1,0 +1,23 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+#include "sdm660-regulator-overlay.dtsi"
+#include "sdm660-overlay.dtsi"
+#include "sdm636-overlay.dtsi"
+#include "sdm660-lpi-overlay.dtsi"
+#include "sdm660-common-overlay.dtsi"
+#include "sdm660-audio-overlay.dtsi"
+#include "sdm660-camera-sensor-qrd-overlay.dtsi"
+#include "sdm660-mdss-overlay.dtsi"
+#include "sdm660-mdss-panels-overlay.dtsi"
+#include "sdm660-mdss-pll-overlay.dtsi"
+#include "msm-pm660l-overlay.dtsi"
+#include "msm-pm660-overlay.dtsi"
+#include "msm-audio-overlay.dtsi"
+#include "dsi-panel-nt36672-1080p-video.dtsi"
+#include "dsi-panel-td4310-1080p-video.dtsi"
+#include "dsi-panel-tm5p5-r63350-1080p-video.dtsi"
+
+&msm_gpu {
+	/* sdm636.dtsi defaults to A509, but X00QD has A512 tweaks */
+	qcom,chipid = <0x05010200>;
+};

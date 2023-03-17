@@ -1,0 +1,7 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+&usb3 {
+	dwc3@a800000 {
+		maximum-speed = "high-speed";
+	};
+};

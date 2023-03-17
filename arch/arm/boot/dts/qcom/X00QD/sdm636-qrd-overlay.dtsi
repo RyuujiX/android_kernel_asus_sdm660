@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+#include "sdm630-qrd-overlay.dtsi"
+#include "sdm660-pinctrl-overlay.dtsi"
+#include "sdm630-camera-sensor-qrd-overlay.dtsi"

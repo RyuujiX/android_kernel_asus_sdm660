@@ -1,0 +1,29 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+&dsi_panel_pwr_supply {
+	qcom,panel-supply-entry@1 {
+		qcom,supply-min-voltage = <5500000>;
+		qcom,supply-max-voltage = <5500000>;
+	};
+	
+	qcom,panel-supply-entry@2 {
+		qcom,supply-min-voltage = <5500000>;
+		qcom,supply-max-voltage = <5500000>;
+	};
+};
+
+&dsi_lgd_incell_sw49106_fhd_video {
+	qcom,mdss-dsi-reset-sequence = <1 200>, <0 200>, <1 200>;
+};
+
+&dsi_dual_nt35597_truly_video {
+	/delete-property/ qcom,mdss-dsi-pan-enable-dynamic-bitclk;
+	/delete-property/ qcom,mdss-dsi-dynamic-bitclk_freq;
+};
+
+&dsi_dual_sharp_video {
+	/delete-property/ qcom,mdss-dsi-panel-hdr-enabled;
+	/delete-property/ qcom,mdss-dsi-panel-hdr-color-primaries;
+	/delete-property/ qcom,mdss-dsi-panel-peak-brightness;
+	/delete-property/ qcom,mdss-dsi-panel-blackness-level;
+};

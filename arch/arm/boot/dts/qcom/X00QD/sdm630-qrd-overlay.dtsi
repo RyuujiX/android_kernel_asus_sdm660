@@ -1,0 +1,193 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+&qrd_batterydata {
+	/delete-node/ qcom,qrd_msm8998_skuk_3000mah;
+	
+	#include "fg-gen3-batterydata-coslight-C11P1708-3150mah_4p35v.dtsi"
+};
+
+&pm660_fg {
+	qcom,fg-jeita-thresholds = <0 10 50 60>;
+	qcom,fg-cutoff-voltage = <3400>; //ASUS BSP : LiJen Battery
+	qcom,fg-empty-voltage = <2800>; //ASUS BSP : LiJen Battery
+	qcom,fg-cutoff-current = <100>; //ASUS BSP : LiJen fine tune msoc for low temperature
+	qcom,fg-esr-tight-filter-micro-pct = <20000>; //ASUS BSP : LiJen Battery
+	qcom,fg-esr-broad-filter-micro-pct = <25000>; //ASUS BSP : LiJen Battery
+	qcom,fg-esr-tight-lt-filter-micro-pct = <2000>; //ASUS BSP : LiJen Battery
+	qcom,fg-esr-broad-lt-filter-micro-pct = <2200>; //ASUS BSP : LiJen Battery
+	qcom,slope-limit-coeffs = <1 1 1 1>; //ASUS BSP : LiJen Battery
+};
+
+&sdhc_1 {
+    qcom,vdd-always-on;
+};
+
+&sdhc_2 {
+	qcom,vdd-voltage-level = <3300000 3300000>;
+};
+
+&pm660l_gpios {
+	gpio@c400 {
+        reg = <0xc400 0x100>;
+        qcom,pin-num = <5>;
+        status = "ok";
+    };
+};
+
+&i2c_6 {
+	tfa98xx@34 {
+		compatible = "nxp,tfa98xx";
+		reg = <0x34>;
+	};
+	tfa98xx@35 {
+		compatible = "nxp,tfa98xx";
+		reg = <0x35>;
+	};
+};
+
+&i2c_4 {
+	status = "okay";
+	focaltech@38 {
+		compatible = "focaltech,fts";
+		//compatible = "focaltech,ft3517";
+		reg = <0x38>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <67 0x2008>;
+		//vdd-supply = <&pm660l_l3>;
+		vcc_i2c-supply = <&pm660_l14>;
+		/* pins used by touchscreen */
+		/*pinctrl-names = "pmx_ts_active","pmx_ts_suspend","pmx_ts_release";
+		pinctrl-0 = <&ts_active>;
+		pinctrl-1 = <&ts_suspend>;
+		//pinctrl-2 = <&ts_release>;*/
+		focaltech,name = "ft8716";
+		//focaltech,family-id = <0x58>;
+		focaltech,reset-gpio = <&tlmm 66 0x0>;
+		focaltech,irq-gpio = <&tlmm 67 0x0>;
+		focaltech,display-coords = <0 0 1080 1920>;
+		focaltech,display-coords-ara = <0 0 1080 2246>;
+		//focaltech,panel-coords = <0 0 1080 1920>;
+		//focaltech,button-map= <139 102 158>;
+		focaltech,have-key;
+		focaltech,key-number = <3>;
+		focaltech,max-touch-number = <10>;
+		focaltech,keys = <158 102 139>;
+		focaltech,key-y-coord = <2000>;
+		focaltech,key-x-coord = <200 400 600>;
+	};
+	
+	synaptics_dsx@20 {
+		compatible = "synaptics,dsx-i2c";
+		reg = <0x20>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <67 0x2008>;
+		vcc_i2c-supply = <&pm660_l14>;
+		//synaptics,pwr-reg-name = "vdd_ana";
+		synaptics,bus-reg-name = "vcc_i2c";
+		synaptics,irq-gpio = <&tlmm 67 0x2008>;
+		//synaptics,reset-gpio  = <&tlmm 66 0x0>;
+		synaptics,irq-on-state = <0>;
+		synaptics,irq-flags = <0x2008>; // IRQF_ONESHOT | IRQF_TRIGGER_LOW
+		synaptics,power-delay-ms = <200>;
+		synaptics,reset-delay-ms = <200>;
+		synaptics,reset-on-state = <0>;
+		synaptics,reset-active-ms = <20>;
+		synaptics,ub-i2c-addr = <0x2c>;
+		// uncomment and update line below as appropriate if there are 0D buttons
+		synaptics,cap-button-codes = <158 139 139>;
+		// uncomment and update lines below as appropriate if there are virtual buttons
+		// synaptics,vir-button-codes = <102 100 900 100 60 158 300 900 100 60>;
+		// synaptics,max-y-for-2d = <800>;
+	};
+};
+&i2c_6 {
+	status = "okay";
+	nq@28 {
+		compatible = "qcom,nq-nci";
+		reg = <0x28>;
+		qcom,nq-irq = <&tlmm 28 0x00>;
+		qcom,nq-ven = <&tlmm 29 0x00>;
+		qcom,nq-firm = <&tlmm 30 0x00>;
+		qcom,nq-clkreq = <&pm660_gpios 4 0x00>;
+		qcom,nq-esepwr = <&tlmm 31 0x00>;
+		interrupt-parent = <&tlmm>;
+		qcom,clk-src = "BBCLK3";
+		interrupts = <28 0>;
+		interrupt-names = "nfc_irq";
+		pinctrl-names = "nfc_active", "nfc_suspend";
+		pinctrl-0 = <&nfc_int_active &nfc_enable_active>;
+		pinctrl-1 = <&nfc_int_suspend &nfc_enable_suspend>;
+		clocks = <&clock_rpmcc RPM_LN_BB_CLK3_PIN>;
+		clock-names = "ref_clk";
+	};
+};
+
+&i2c_7 {
+	status = "okay";
+	cm36656_i2c@60 {
+		compatible = "qcom,cm36656";
+		reg = <0x60>;
+		pinctrl-names = "alsps_gpio_high","alsps_gpio_low";
+		pinctrl-0 = <&cm36656_default>;
+		pinctrl-1 = <&cm36656_sleep>;
+		qcom,alsps-gpio = <&tlmm 45 0x0>;
+		vcc_ana-supply = <&pm660l_l3>;
+	};
+
+	qcom_tcs3400_i2c@39 {
+		compatible = "ams,tcs3400";
+		reg = <0x39>;
+		vinc-supply=<&pm660l_l6>;
+	};
+};
+
+&soc {
+	hall_sensor {
+        compatible = "qcom,hall";
+        pinctrl-names = "hall_gpio_high","hall_gpio_low";
+        pinctrl-0 = <&gpio_hall_active>;
+        pinctrl-1 = <&gpio_hall_suspend>;
+        qcom,hall-gpio = <&tlmm 75 0x0>;
+    };
+	
+	goodixfp {
+		compatible = "goodix,fingerprint";
+		fp-reset-gpio = <&tlmm 20 0x0>;
+		fp-irq-gpio = <&tlmm 72 0x2008>;
+		fp-vcc-enable-gpio = <&pm660l_gpios 5 0x0>;
+		fp-ID1-gpio = <&tlmm 74 0x0>;
+		/* Pinctrl Setting */
+		qcom,use-pinctrl;
+		pinctrl-names = "fp_default", "fp_sleep";
+		pinctrl-0 = <&fp_int_active>;
+		pinctrl-1 = <&fp_int_suspend>;
+	};
+	
+	gpio_keys {
+		vol_up {
+			gpios = <&tlmm 44 0x1>;
+		};
+		
+		vol_down {
+			label = "volume_down";
+			gpios = <&tlmm 43 0x1>;
+			linux,input-type = <1>;
+			linux,code = <114>;
+			gpio-key,wakeup;
+			debounce-interval = <15>;
+		};
+	};
+};
+
+&pm660_charger {
+	pinctrl-names = "ALT_gpio_low", "ALT_gpio_default";
+	pinctrl-0 = <&thermal_alert_suspend>;
+	pinctrl-1 = <&thermal_alert_active>;
+	ADC_SW_EN-gpios59 = <&tlmm 71 0x0>;
+	ADCPWREN_PMI_GP1-gpios34 = <&tlmm 3 0x0>;
+	USB_THERMAL_ALERT-gpios52 = <&tlmm 52 0x0>;
+	
+	USB_LOW_IMPEDANCE-gpios77 = <&tlmm 77 0x0>; //disable in driver
+	USB_LID_EN-gpios71 = <&tlmm 71 0x0>;                        //disable in driver
+	USB_WATER_PROOF-gpios73 = <&tlmm 73 0x0>;        //disable in driver
+};

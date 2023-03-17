@@ -1,0 +1,183 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+/delete-node/ &ufs_dev_reset_assert;
+/delete-node/ &ufs_dev_reset_deassert;
+
+&cam_sensor_rear_active {
+	mux {
+		pins = "gpio46";
+	}
+	
+	config {
+		pins = "gpio46";
+	}
+};
+
+&cam_sensor_rear_suspend {
+	mux {
+		pins = "gpio46";
+	}
+	
+	config {
+		pins = "gpio46";
+	}
+};
+
+&cam_sensor_front_active {
+	mux {
+		pins = "gpio47";
+	}
+	
+	config {
+		pins = "gpio47";
+	}
+};
+
+&gpio_key_active {
+	mux {
+		pins = "gpio43", "gpio44";
+	}
+	
+	config {
+		pins = "gpio43", "gpio44";
+	}
+};
+
+&gpio_key_suspend {
+	mux {
+		pins = "gpio43", "gpio44";
+	}
+	
+	config {
+		pins = "gpio43", "gpio44";
+	}
+};
+
+&soc {
+	tlmm_fp_int {
+		fp_int_active: fp_int_active {
+				mux {
+						pins = "gpio72";
+						function = "gpio";
+				};
+				config {
+						pins = "gpio72";
+						drive-strength = <2>;
+						bias-disable = <0>; /* no pull */
+				};
+		};
+		fp_int_suspend: fp_int_suspend {
+				mux {
+						pins = "gpio72";
+						function = "gpio";
+				};
+				config {
+						pins = "gpio72";
+						drive-strength = <2>;
+						bias-disable = <0>; /* no pull */
+				};
+		};
+	};
+	
+	cm36656_int_pin {
+		cm36656_default: cm36656_default {
+				mux {
+						pins = "gpio45";
+						function = "gpio";
+				};
+				config {
+						pins = "gpio45";
+						bias-pull-up;
+						drive-strength = <6>;
+				};
+		};
+		cm36656_sleep: cm36656_sleep {
+				mux {
+						pins = "gpio45";
+						function = "gpio";
+				};
+				config {
+						pins = "gpio45";
+						bias-pull-up;
+						drive-strength = <6>;
+				};
+		};
+	};
+	
+	hall_int_pin {
+		gpio_hall_active: gpio_hall_active {
+				mux {
+						pins = "gpio75";
+						function = "gpio";
+				};
+				config {
+						pins = "gpio75";
+						drive-strength = <2>;
+						bias-pull-up;
+				};
+		};
+		
+		gpio_hall_suspend: gpio_hall_suspend {
+				mux {
+						pins = "gpio75";
+						function = "gpio";
+				};
+				config {
+						pins = "gpio75";
+						drive-strength = <2>;
+						bias-pull-up;
+				};
+		};
+	};
+	
+	charger_thermal_alert {
+		thermal_alert_suspend: thermal_alert_suspend {
+				mux {
+						pins = "gpio52";
+						function = "SOUTH";
+				};
+				config {
+						pins = "gpio52";
+						drive-strength = <2>; /* 2 mA */
+						bias-pull-down;  //pull DOWN
+				};
+		};
+		
+		thermal_alert_active: thermal_alert_active {
+				mux {
+						pins = "gpio52";
+						function = "SOUTH";
+				};
+				config {
+						pins = "gpio52";
+						drive-strength = <2>; /* 2 mA */
+						bias-disable;  //no pull
+				};
+		};
+	};
+	
+	charger_usb_switch {
+		usb_switch_active: usb_switch_active {
+				mux {
+						pins = "gpio71";
+						function = "NORTH";
+				};
+				config {
+						pins = "gpio71";
+						drive-strength = <2>; /* 2 mA */
+						bias-pull-down; /* pull down*/
+				};
+		};
+		usb_switch_suspend: usb_switch_suspend {
+				mux {
+						pins = "gpio71";
+						function = "NORTH";
+				};
+				config {
+						pins = "gpio71";
+						drive-strength = <2>; /* 2 mA */
+						bias-pull-down; /* pull down */
+				};
+		};
+	};
+};

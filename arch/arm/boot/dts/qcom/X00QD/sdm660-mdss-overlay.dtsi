@@ -1,0 +1,16 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+&mdss_dsi0 {
+	wqhd-vddio-supply = <&pm660_l13>;
+	clocks = <&clock_mmss MMSS_MDSS_BYTE0_CLK>,
+		 <&clock_mmss MMSS_MDSS_PCLK0_CLK>,
+		 <&clock_mmss MMSS_MDSS_ESC0_CLK>,
+		 <&clock_mmss BYTE0_CLK_SRC>,
+		 <&clock_mmss PCLK0_CLK_SRC>,
+		 <&clock_mmss MMSS_MDSS_BYTE0_INTF_CLK>;
+	clock-names = "byte_clk", "pixel_clk", "core_clk",
+		"byte_clk_rcg", "pixel_clk_rcg",
+		"byte_intf_clk";
+};
+
+/delete-node/ &mdss_dsi1

@@ -1,0 +1,8 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+&soc {
+	qcom,msm-cdsp-loader {
+		compatible = "qcom,cdsp-loader";
+		qcom,proc-img-to-load = "cdsp";
+	};
+};

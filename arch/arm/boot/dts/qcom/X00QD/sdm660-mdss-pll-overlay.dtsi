@@ -1,0 +1,15 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+
+&mdss_dsi0_pll {
+	reg = <0xc994400 0x588>,
+		  <0xc8c2300 0x8>;
+	reg-names = "pll_base", "gdsc_base";
+	
+	/delete-property/ memory-region;
+};
+
+&mdss_dsi1_pll {
+	reg = <0xc996400 0x588>,
+		  <0xc8c2300 0x8>;
+	reg-names = "pll_base", "gdsc_base";
+};
