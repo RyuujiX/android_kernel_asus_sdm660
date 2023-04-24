@@ -6,6 +6,8 @@ Getting Started
 You can use this source if u Want , 
 There is has 2 Variant , HMP and EAS .
 
+Clone with `--recursive` option coz this source has submodule.
+
 Just Copy, Paste, Then Execute the command :)
 
 Make sure `androidboot.version` has defined on Boot Cmdline with
@@ -29,6 +31,13 @@ On Branch r7/eas:
    git revert 636637918b2bf09de2d7e54d08f3c23c8932e6ef -n && \
    git commit -m "Use Back Stock Freq"
 ```
+
+KernelSU
+--------
+KernelSU is implemented and enabled by default. If u don't want it...
+Just set `CONFIG_KSU=n` in defconfig or Add `kernelsu.enabled=0` into boot cmdline.
+
+Source: https://github.com/RyuujiX/KernelSU
 
 About NLV & LV
 --------------
