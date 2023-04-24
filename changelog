@@ -1,3 +1,9 @@
+<b><#selectbg_g>Apr 24,2023</#></b>
+
+  <*> Bringup SkyWalker-レイナ-Reina-X</*>
+  <*> KernelSU Implemented</*>
+  <*> EAS: AK3: Revert back to Old Perf HAL</*>
+
 <b><#selectbg_g>Feb 17,2023</#></b>
 
   <*> Bringup SkyWalker-レイナ-Reina</*>
@@ -11,6 +17,8 @@
 
 <b><#selectbg_g>NOTES :</#></b>
 
+  <*> KernelSU is enabled by default and will disabled automatically if Magisk has been installed... If u don't want KernelSU, just disable it.</*>
+  <*> Recommended to use KernelSU Manager v5.3 and above.</*>
   <*> NFI still Better with Q FW.</*>
   <*> If There is an internal problem with your device warning show , just click ok and ignore.</*>
   <*> Kernel need sometimes to settle.</*>
