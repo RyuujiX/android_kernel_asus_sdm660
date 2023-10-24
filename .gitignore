@@ -127,3 +127,9 @@ Android.bp
 
 # Huaqin, stop being retard by doing all kernel stuffs on Windows
 !.gitattributes
+
+# Build script
+out/
+*.zip
+log.txt
+*.bak
