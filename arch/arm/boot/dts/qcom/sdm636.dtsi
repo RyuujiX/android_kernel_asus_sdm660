@@ -39,23 +39,6 @@
 			/delete-node/ port@4;
 		};
 	};
-
-	devfreq_memlat_4: qcom,arm-memlat-mon-4 {
-		qcom,core-dev-table =
-		< 1113600 762 >,
-		< 1401600 3879 >,
-		< 1804800 5163 >;
-	};
-
-	devfreq_cpufreq: devfreq-cpufreq {
-		mincpubw-cpufreq {
-			cpu-to-dev-map-4 =
-				< 1113600 762 >,
-				< 1401600 2086 >,
-				< 1747200 2929 >,
-				< 1804800 5163 >;
-		};
-	};
 };
 
 &soc {
@@ -71,29 +54,4 @@
 		/delete-node/ qcom,msm_fastrpc_compute_cb12;
 		/delete-node/ qcom,msm_fastrpc_compute_cb13;
 	};
-};
-
-/* GPU overrides */
-&clock_gfx {
-	qcom,gfxfreq-corner =
-			< 0         0>,
-			< 160000000 1>,  /* MinSVS */
-			< 266000000 2>,  /* LowSVS */
-			< 370000000 3>,  /* SVS    */
-			< 430000000 4>,  /* SVS_L1 */
-			< 585000000 5>,  /* NOM    */
-			< 647000000 6>,  /* NOM_L1 */
-			< 750000000 7>;  /* TURBO  */
-};
-
-&gfx_vreg_corner {
-	qcom,corner-frequencies =
-		<160000000 266000000 370000000
-		 430000000 585000000 647000000
-		 750000000>;
-};
-
-&msm_gpu {
-		/* Update GPU chip ID*/
-		qcom,chipid = <0x05000900>;
 };
