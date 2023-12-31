@@ -16,21 +16,17 @@ https://github.com/RyuujiX/android_kernel_asus_sdm660/commit/b6f50a7917e4336495f
 
 `androidboot.version` default value is `12`
 
-OverClocked Kernel
+OverClock Kernel
 ------------------
-This Kernel is Overclocked. If u want go Back to Stock Freq, Do this:
+This Kernel is using Stock Freq. If u want Overclocked Freq, Do this:
 
-On Branch r7/hmp:
-```bash
-   git revert e2194a0d2d4aa4abbb0e7215ca5fe1cc889d5f78 -n && \
-   git commit -m "Use Back Stock Freq"
-```
+To Overclock CPU:
 
-On Branch r7/eas:
-```bash
-   git revert 636637918b2bf09de2d7e54d08f3c23c8932e6ef -n && \
-   git commit -m "Use Back Stock Freq"
-```
+- Add `overclock.cpu=1` into boot cmdline.
+
+To Overclock GPU:
+
+- Add `overclock.gpu=1` into boot cmdline.
 
 KernelSU
 --------

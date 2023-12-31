@@ -1,24 +1,24 @@
-<b><#selectbg_g>Apr 24,2023</#></b>
+<b><#selectbg_g>Jan 1,2024</#></b>
 
-  <*> Bringup SkyWalker-レイナ-Reina-X</*>
-  <*> KernelSU Implemented</*>
-  <*> EAS: AK3: Revert back to Old Perf HAL</*>
-
-<b><#selectbg_g>Feb 17,2023</#></b>
-
-  <*> Bringup SkyWalker-レイナ-Reina</*>
-  <*> Patched Little bit for Crypto</*>
-  <*> Fix Bootloop on some A13 ROMs</*>
-  <*> Reverted "Boost when open app" because too high drain and overheat</*>
-  <*> OFI: qcacld-3.0: Re-Enable SAE by default</*>
+  <*> Bringup SkyWalker-サイセイ-Saisei</*>
+  <*> KernelSU: Sync & Upstream</*>
+  <*> KernelSU: Added Safe Mode</*>
+  <*> smb-lib: Refined Fast Charging Hack with Toggle</*>
+  <*> qpnp-smb2: Fixed some AICL Issue</*>
+  <*> Now, OC and Stock in 1 File</*>
+  <*> Removed Sultan's PID</*>
+  <*> devfreq: simple_gpu: Fix stuck on low GPU freq after adding more GPU STEPS!</*>
+  <*> sdfat: Update to Version 2.4.5</*>
+  <*> sdfat: Masquerade VFAT (Disable Main VFAT driver)</*>
+  <*> sdfat: Masquerade Tuxera's ExFAT (Fix ExFAT Issue on Stock ROM)</*>
   <*> More Changes, see on GitHub Commits</*>
 
 
 
 <b><#selectbg_g>NOTES :</#></b>
 
-  <*> KernelSU is enabled by default and will disabled automatically if Magisk has been installed... If u don't want KernelSU, just disable it.</*>
-  <*> Recommended to use KernelSU Manager v5.3 and above.</*>
+  <*> Make sure to plug out charger before switching fast charging with kernel manager / terminal</*>
+  <*> Recommended to use KernelSU Manager v0.7.1 and above</*>
   <*> NFI still Better with Q FW.</*>
   <*> If There is an internal problem with your device warning show , just click ok and ignore.</*>
   <*> Kernel need sometimes to settle.</*>
