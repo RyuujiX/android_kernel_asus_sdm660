@@ -19,6 +19,7 @@
  *
  *   0 - Disabled (default)
  *   1 - Force faster charge
+ *   2 - Force More Faster Charge
 */
 
 #include <linux/kobject.h>
@@ -35,6 +36,8 @@ static int __init get_fastcharge_opt(char *ffc)
 		force_fast_charge = 0;
 	} else if (strcmp(ffc, "1") == 0) {
 		force_fast_charge = 1;
+	} else if (strcmp(ffc, "2") == 0) {
+		force_fast_charge = 2;
 	} else {
 		force_fast_charge = 0;
 	}
@@ -53,7 +56,7 @@ static ssize_t force_fast_charge_show(struct kobject *kobj, struct kobj_attribut
 static ssize_t force_fast_charge_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count)
 {
 	sscanf(buf, "%d ", &force_fast_charge);
-	if (force_fast_charge < 0 || force_fast_charge > 1)
+	if (force_fast_charge < 0 || force_fast_charge > 2)
 		force_fast_charge = 0;
 
 	return count;
