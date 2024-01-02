@@ -3475,6 +3475,7 @@ void asus_batt_RTC_work(struct work_struct *dat)
 #define ICL_2000mA	0x50
 #define ICL_2850mA	0x72
 #define ICL_3000mA	0x78
+#define ICL_4000mA  0xF8
 #define ASUS_MONITOR_CYCLE	60000
 #define TITAN_750K_MIN	675
 #define TITAN_750K_MAX	851
@@ -3498,6 +3499,7 @@ void smblib_asus_monitor_start(struct smb_charger *chg, int time)
 #define SMBCHG_FLOAT_VOLTAGE_VALUE_4P064		0x4D
 #define SMBCHG_FLOAT_VOLTAGE_VALUE_4P350		0x73
 #define SMBCHG_FLOAT_VOLTAGE_VALUE_4P357		0x74
+#define SMBCHG_FLOAT_VOLTAGE_VALUE_4P485        0xF8
 #define SMBCHG_FAST_CHG_CURRENT_VALUE_850MA 	0x22
 #define SMBCHG_FAST_CHG_CURRENT_VALUE_925MA 	0x25
 #define SMBCHG_FAST_CHG_CURRENT_VALUE_1400MA 	0x38
@@ -3506,6 +3508,7 @@ void smblib_asus_monitor_start(struct smb_charger *chg, int time)
 #define SMBCHG_FAST_CHG_CURRENT_VALUE_2000MA 	0x50
 #define SMBCHG_FAST_CHG_CURRENT_VALUE_2050MA 	0x52
 #define SMBCHG_FAST_CHG_CURRENT_VALUE_3000MA 	0x78
+#define SMBCHG_FAST_CHG_CURRENT_VALUE_4000MA    0xF8
 
 enum JEITA_state {
 	JEITA_STATE_INITIAL,
@@ -3741,8 +3744,15 @@ void jeita_rule(void)
 	u8 USBIN_ICL_reg;
 #ifdef CONFIG_FORCE_FAST_CHARGE
 	u8 FFCC_reg_val;
+	u8 FFV_CFG_reg_val;
 	
-	FFCC_reg_val = SMBCHG_FAST_CHG_CURRENT_VALUE_3000MA;
+	if (force_fast_charge == 1) {
+		FFV_CFG_reg_val = SMBCHG_FLOAT_VOLTAGE_VALUE_4P350;
+		FFCC_reg_val = SMBCHG_FAST_CHG_CURRENT_VALUE_3000MA;
+	} else if (force_fast_charge == 2) {
+		FFV_CFG_reg_val = SMBCHG_FLOAT_VOLTAGE_VALUE_4P485;
+		FFCC_reg_val = SMBCHG_FAST_CHG_CURRENT_VALUE_4000MA;
+	}
 #endif
 
 	/* reg1090, 0x10, =bit4=1
@@ -3804,8 +3814,17 @@ void jeita_rule(void)
 
 	case JEITA_STATE_RANGE_0_to_100:
 		charging_enable = EN_BAT_CHG_EN_COMMAND_TRUE;
+#ifdef CONFIG_FORCE_FAST_CHARGE
+		if (force_fast_charge > 0) {
+		FV_CFG_reg_value = FFV_CFG_reg_val;
+		FCC_reg_value = FFCC_reg_val;
+		} else {
+#endif
 		FV_CFG_reg_value = SMBCHG_FLOAT_VOLTAGE_VALUE_4P350;
 		FCC_reg_value = SMBCHG_FAST_CHG_CURRENT_VALUE_925MA;
+#ifdef CONFIG_FORCE_FAST_CHARGE
+		}
+#endif
 
 		rc = SW_recharge(smbchg_dev);
 		if (rc < 0)
@@ -3819,13 +3838,17 @@ void jeita_rule(void)
 	case JEITA_STATE_RANGE_100_to_500:
 #endif
 		charging_enable = EN_BAT_CHG_EN_COMMAND_TRUE;
-		FV_CFG_reg_value = SMBCHG_FLOAT_VOLTAGE_VALUE_4P350;
 #ifdef CONFIG_FORCE_FAST_CHARGE
-		if (force_fast_charge > 0)
+		if (force_fast_charge > 0) {
+		FV_CFG_reg_value = FFV_CFG_reg_val;
 		FCC_reg_value = FFCC_reg_val;
-		else
+		} else {
 #endif
+		FV_CFG_reg_value = SMBCHG_FLOAT_VOLTAGE_VALUE_4P350;
 		FCC_reg_value = SMBCHG_FAST_CHG_CURRENT_VALUE_2050MA;
+#ifdef CONFIG_FORCE_FAST_CHARGE
+		}
+#endif
 
 		rc = SW_recharge(smbchg_dev);
 		if (rc < 0)
@@ -3932,7 +3955,11 @@ void asus_chg_flow_work(struct work_struct *work)
 #ifdef CONFIG_FORCE_FAST_CHARGE
 	u8 fc_icl;
 	
-	fc_icl = ICL_3000mA;
+	if (force_fast_charge == 1) {
+		fc_icl = ICL_3000mA;
+	} else if (force_fast_charge == 2) {
+		fc_icl = ICL_4000mA;
+	}
 #endif
 
 	if (!asus_get_prop_usb_present(smbchg_dev)) {
@@ -4171,8 +4198,10 @@ void asus_adapter_adc_work(struct work_struct *work)
 	}
 
 #ifdef CONFIG_FORCE_FAST_CHARGE
-	if (force_fast_charge > 0)
+	if (force_fast_charge == 1)
 		usb_max_current = ICL_3000mA;
+	else if (force_fast_charge == 2)
+		usb_max_current = ICL_4000mA;
 #endif
 
 	rc = smblib_set_usb_suspend(smbchg_dev, 0);
