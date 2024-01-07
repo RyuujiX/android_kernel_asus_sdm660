@@ -203,7 +203,7 @@ module_param_named(
 	debug_mask, __debug_mask, int, S_IRUSR | S_IWUSR
 );
 
-static int __weak_chg_icl_ua = 500000;
+static int __weak_chg_icl_ua = 1500000;
 module_param_named(
 	weak_chg_icl_ua, __weak_chg_icl_ua, int, S_IRUSR | S_IWUSR);
 
@@ -1472,7 +1472,7 @@ static int smb2_disable_typec(struct smb_charger *chg)
 	}
 
 	/* wait for mode change before enabling FSM */
-	usleep_range(10000, 11000);
+	usleep_range(15000, 20000);
 	/* release FSM from idle state */
 	rc = smblib_masked_write(chg, TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG,
 			TYPEC_DISABLE_CMD_BIT, 0);
@@ -1503,7 +1503,7 @@ static int smb2_disable_typec(struct smb_charger *chg)
 	}
 
 	/* wait for mode change before enabling FSM */
-	usleep_range(10000, 11000);
+	usleep_range(15000, 20000);
 	/* release FSM from idle state */
 	rc = smblib_masked_write(chg, TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG,
 			TYPEC_DISABLE_CMD_BIT, 0);
@@ -2519,7 +2519,7 @@ int32_t get_ID_vadc_voltage(void)
 		adc = (int) adc_result.physical;
 
 		/* uV to mV */
-		adc = adc / 1000;
+		adc = adc / 1500;
 
 		pr_debug("%s: adc=%d adc_result.physical=%lld adc_result.chan=0x%x\n",
 			__func__, adc,adc_result.physical,adc_result.chan);

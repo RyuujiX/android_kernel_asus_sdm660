@@ -27,6 +27,10 @@
 #include <linux/slab.h>
 #include <linux/pmic-voter.h>
 
+#ifdef CONFIG_FORCE_FAST_CHARGE
+#include <linux/fastchg.h>
+#endif
+
 #define DRV_MAJOR_VERSION	1
 #define DRV_MINOR_VERSION	0
 
@@ -865,7 +869,7 @@ static int usb_icl_vote_callback(struct votable *votable, void *data,
 	 *	unvote USBIN_I_VOTER) the status_changed_work enables
 	 *	USBIN_I_VOTER based on settled current.
 	 */
-	if (icl_ua <= 1400000)
+	if (icl_ua <= 3000000)
 		vote(chip->pl_enable_votable_indirect, USBIN_I_VOTER, false, 0);
 	else
 		schedule_delayed_work(&chip->status_change_work,
@@ -887,14 +891,24 @@ static int usb_icl_vote_callback(struct votable *votable, void *data,
 
 	if (rerun_aicl) {
 		/* set a lower ICL */
-		pval.intval = max(pval.intval - ICL_STEP_UA, ICL_STEP_UA);
+#ifdef CONFIG_FORCE_FAST_CHARGE
+		if (force_fast_charge == 1)
+			pval.intval = 3000000 - ICL_STEP_UA, ICL_STEP_UA;
+		else
+#endif
+			pval.intval = max(pval.intval - ICL_STEP_UA, ICL_STEP_UA);
 		power_supply_set_property(chip->main_psy,
 				POWER_SUPPLY_PROP_CURRENT_MAX,
 				&pval);
 	}
 
 	/* set the effective ICL */
-	pval.intval = icl_ua;
+#ifdef CONFIG_FORCE_FAST_CHARGE
+	if (force_fast_charge == 1)
+		pval.intval = 3000000;
+	else
+#endif
+		pval.intval = icl_ua;
 	power_supply_set_property(chip->main_psy,
 			POWER_SUPPLY_PROP_CURRENT_MAX,
 			&pval);
@@ -1194,10 +1208,10 @@ static void handle_settled_icl_change(struct pl_data *chip)
 	}
 	main_limited = pval.intval;
 
-	if ((main_limited && (main_settled_ua + chip->pl_settled_ua) < 1400000)
+	if ((main_limited && (main_settled_ua + chip->pl_settled_ua) < 3000000)
 			|| (main_settled_ua == 0)
 			|| ((total_current_ua >= 0) &&
-				(total_current_ua <= 1400000)))
+				(total_current_ua <= 3000000)))
 		vote(chip->pl_enable_votable_indirect, USBIN_I_VOTER, false, 0);
 	else
 		vote(chip->pl_enable_votable_indirect, USBIN_I_VOTER, true, 0);

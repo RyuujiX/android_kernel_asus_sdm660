@@ -145,6 +145,16 @@ static struct jeita_fv_cfg jeita_fv_config = {
 };
 
 #ifdef CONFIG_FORCE_FAST_CHARGE
+static struct jeita_fcc_cfg jeita_fcc_configfcc = {
+	.fcc_cfg	= {
+		/* TEMP_LOW	TEMP_HIGH	FCC */
+		{0,		100,		5000000},
+		{101,		200,		5000000},
+		{201,		450,		5000000},
+		{451,		550,		5000000},
+	},
+};
+
 static struct jeita_fcc_cfg jeita_fcc_configfc = {
 	.fcc_cfg	= {
 		/* TEMP_LOW	TEMP_HIGH	FCC */
@@ -325,7 +335,13 @@ static int handle_jeita(struct step_chg_info *chip)
 	}
 
 #ifdef CONFIG_FORCE_FAST_CHARGE
-	if (force_fast_charge == 2)
+	if (force_fast_charge == 1)
+		rc = get_val(jeita_fcc_configfcc.fcc_cfg, jeita_fcc_config.hysteresis,
+				chip->jeita_fcc_index,
+				pval.intval,
+				&chip->jeita_fcc_index,
+				&fcc_ua);
+	else if (force_fast_charge == 2)
 		rc = get_val(jeita_fcc_configfc.fcc_cfg, jeita_fcc_config.hysteresis,
 				chip->jeita_fcc_index,
 				pval.intval,
